@@ -1,0 +1,22 @@
+
+------------------------
+CHANGES IN VERSION 0.1.0
+----------------------
+CHANGES SINCE LAST TIME
+    o None made.
+
+ BUG FIXES
+    o None reported.
+
+
+------------------------
+CHANGES IN VERSION 0.0.9
+----------------------
+IMPROVEMENTS SINCE LAST TIME
+    o We have refined some of the codes to speed up the package.
+
+FUTURE DEVELOPMENT
+    o Some functions will be rewitten in C.
+
+BUG FIXES
+    o None reported so far.

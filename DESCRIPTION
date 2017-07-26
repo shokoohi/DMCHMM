@@ -1,0 +1,41 @@
+Package: DMCHMM
+Type: Package
+Title: Differentially Methylated CpG using Hidden Markov Model
+Version: 0.99.0
+Author: Frhad Shokoohi
+Maintainer: Frhad Shokoohi <shokoohi@icloud.com>
+Description: DMCHMM is a novel profiling tool for identifying 
+    differentially methylated CpG sites using Hidden Markov Model in bisulfite
+    sequencing data.
+Depends: R (>= 3.4.0),
+    SummarizedExperiment,
+    methods,
+    S4Vectors,
+    doSNOW,
+    GenomicRanges,
+    IRanges,
+    fdrtool
+Imports: utils,
+    stats,
+    parallel,
+    foreach,
+    grDevices,
+    rtracklayer,
+    multcomp,
+    calibrate,
+    graphics
+Suggests: testthat, 
+    RUnit,
+    BiocGenerics,
+    knitr
+VignetteBuilder:
+    knitr
+biocViews: DifferentialMethylation, Sequencing, HiddenMarkovModel, Coverage
+License: GPL (>= 3)
+Date: 2017-06-23
+Encoding: UTF-8
+LazyData: true
+BugReports: https://github.com/shokoohi/DMCHMM/issues
+RoxygenNote: 6.0.1
+NeedsCompilation: no
+Packaged: 2017-06-23 00:13:02 UTC; Farhad

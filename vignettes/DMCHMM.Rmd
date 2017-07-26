@@ -1,0 +1,172 @@
+---
+title: "DMCHMM: Differentially Methylated CpG using Hidden Markov Model"
+author: "Farhad Shokoohi"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DMCHMM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+DNA methylation studies have increased in number over the past decade thanks 
+to the recent advances in next-generation sequencing (NGS) and microarray 
+technology (MA), providing many data sets at high resolution, enabling 
+researchers to understand methylation patterns and their regulatory roles in 
+biological processes and diseases.  
+Notwithstanding that diverse methods and software have created ample 
+opportunities for researchers to do quantitative analysis, they make it 
+difficult for practitioners to choose the one that is suitable and efficient 
+in analyzing DNA methylation data. 
+Having examined most of differentially methylation identification tools for 
+bisulfite sequencing (BS-Seq) data, we observed several drawbacks in the 
+existing analytic tools. To address these issues we have developed a novel 
+differentially methylated CpG site identification tool which is based on Hidden
+Markov models (HMM) called `DMCHMM`. This vignette provides some guidelines on 
+how to use the package and analyze BS-Seq data. 
+
+Following topics will be discussed in this vignette:
+
+- **Reading BS-Seq data**
+- **Simulating BS-Seq data**
+- **Predicting methylation levels using HMM and EM algorithm**
+- **Predicting methylation levels using HMM and MCMC algorithm**
+- **Identifying DMCs**
+
+## S4 Classes
+
+Two different classes are defined by extending the 
+`SummarizedExperiment-class`. The `BSData-class` is designed to hold BS-Seq 
+data. Similarly, `BSData-method` is defined to create a `BSData` object. 
+This class includes two slots:
+the `methReads`, a matrix with columns representing samples and rows 
+representing genomic positions (CpG sites) and elements of matrix representing 
+methylation counts at each position in each sample; 
+the `totalReads`, a matrix with similar columns and rows except the elements 
+representing total number of reads. 
+
+## Reading BS-Seq data
+
+For reading raw BS-Seq data we adopted The `readBismark` function from `BiSeq`
+package. The `readBismark-method` reads samples stored in different files with 
+six columns of *chromosome*, *start position*, *end position*, 
+*methylation percentage*, *number of Cs* and *number of Ts*. 
+
+Three data files are included in the `DMCHMM` package for illustration. 
+The data can be imported using following code. 
+
+```{r, eval=FALSE, results='hide', message=FALSE}
+library(DMCHMM)
+fn <- list.files(system.file("extdata",package = "DMCHMM"))
+fn.f <- list.files(system.file("extdata",package="DMCHMM"), full.names=TRUE)
+OBJ <- readBismark(fn.f, fn)
+cdOBJ <- DataFrame(Cell = factor(c("BC", "TC","Mono"),
+labels = c("BC", "TC", "Mono")), row.names = c("BCU1568","BCU173","BCU551"))
+colData(OBJ) <- cdOBJ
+OBJ
+```
+
+     output: 
+        class: BSData 
+        dim: 25668 3 
+        metadata(0):
+        assays(2): totalReads methReads
+        rownames(25668): 1 2 ... 25667 25668
+        rowData names(0):
+        colnames(3): BCU1568 BCU173 BCU551
+        colData names(1): Cell
+
+## Simulating BS-Seq data
+
+The above data set only include one sample for each cell type. We need more 
+samples to be able to compare their methylations and find DMCs. For illustration
+we generate a sample of BS-Seq data as follows. 
+
+```{r, eval=FALSE, results='hide', message=FALSE}
+nr <- 500; nc <- 8
+metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
+methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
+r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
+names(r1) <- 1:nr
+cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
+OBJ1 <- BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+OBJ1
+```
+
+    output: 
+        class: BSData 
+        dim: 500 8 
+        metadata(0):
+        assays(4): methReads totalReads
+        rownames(500): 1 2 ... 499 500
+        rowData names(0):
+        colnames(8): A B ... G H
+        colData names(1): Group
+
+## Predicting methylation levels using HMM and EM algorithm
+
+There are two approaches to smoothed the data before testing for DMCs. Either EM
+or MCMC can be used to predict methylation levels utilizing HMM. The 
+`methHMEM-method` which is developed to predict methylation levels. The output 
+is a `BSDMCs-class` that can be either used to find DMCs or use MCMC algorithm 
+to re-smooth the raw data. The process is as follows. 
+
+```{r, eval=FALSE, results='hide', message=FALSE}
+OBJ2 <- methHMEM(OBJ1, mc.cores=detectCores())
+OBJ2
+```
+
+    output: 
+        class: BSDMCs 
+        dim: 500 8 
+        metadata(3): K Beta Pm
+        assays(4): methReads totalReads methLevels methStates
+        rownames(500): 1 2 ... 499 500
+        rowData names(0):
+        colnames(8): A B ... G H
+        colData names(1): Group
+
+## Predicting methylation levels using HMM and MCMC algorithm
+
+Although EM algorithm is a fast way to smooth the data but the results are not
+as good as the MCMC algorithm. The MCMC algorithm, however, is slow. In order to
+increase the speed, we first use `methHMEM-method` to find the HMM order for 
+each sample and then we use `methHMCMC-method` to predict methylation levels. 
+The procedure is as follows. 
+
+```{r, eval=FALSE, results='hide', message=FALSE}
+OBJ3 <- methHMMCMC(OBJ2, mc.cores=detectCores())
+OBJ3
+```
+
+    output: 
+        class: BSDMCs 
+        dim: 500 8 
+        metadata(3): K Beta Pm
+        assays(4): methReads totalReads methLevels methStates
+        rownames(500): 1 2 ... 499 500
+        rowData names(0):
+        colnames(8): A B ... G H
+        colData names(1): Group
+
+## Identifying DMCs
+
+Having smoothed the data using HMM, we run linear between predicted methylation
+levels and grouping covariate. In case other covariates exist, one can use the 
+`formula` argument to specify a linear model. When there is no covariates no 
+action is required. The following command identifys the DMCs. The results are
+stored in a `BSDMCs-class` and can be retrived by calling `metadata` command. 
+
+```{r, eval=FALSE, results='hide', message=FALSE}
+OBJ4 <- findDMCs(OBJ3, mc.cores=detectCores())
+head(metadata(OBJ4)$DMCHMM)
+```
+
+    output: 
+          DMCs   pvalues   qvalues DMCsG1vsG2 methDirG1vsG2
+        1    0 0.9666323 0.9947863          0         equal
+        2    0 0.8364271 0.9939796          0         hyper
+        3    0 0.2407768 0.9793929          0         hyper
+        4    0 0.6684606 0.9924782          0          hypo
+        5    0 0.3632399 0.9862448          0         equal
+        6    0 0.4307814 0.9883764          0          hypo
