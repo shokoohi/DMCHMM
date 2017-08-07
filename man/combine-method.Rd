@@ -31,7 +31,7 @@ two \code{\link{BSDMCs-class}}
 }
 \examples{
 set.seed(1980)
-nr <- 500; nc <- 8
+nr <- 200; nc <- 8
 metht <- matrix(as.integer(runif(nr * nc*2, 0, nr)), nr)
 methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc*2)),nr,nc*2)
 r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")

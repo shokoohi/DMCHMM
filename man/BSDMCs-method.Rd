@@ -60,7 +60,7 @@ The rows of a \code{BSDMCs} object represent
 }
 \examples{
 set.seed(1980)
-nr <- 500; nc <- 8
+nr <- 200; nc <- 8
 metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
