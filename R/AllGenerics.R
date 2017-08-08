@@ -98,7 +98,16 @@ setGeneric("totalReads<-",
 #' @name cBSDMCs-method
 #' @import S4Vectors
 #' @inheritParams params
-#' @details The rows of a \code{BSDMCs} object represent
+#' @details The rows of a \code{BSDMCs} object represent ranges (in genomic
+#' coordinates) of interest. The ranges of interest are described by a
+#' \code{GRanges} or a \code{GRangesList} object,
+#' accessible using the \code{rowRanges} function.
+#' The \code{GRanges} and \code{GRangesList} classes
+#' contains sequence (e.g., chromosome) name, genomic coordinates, and strand
+#' information. Each range can be annotated with additional data; this data
+#' might be used to describe the range or to
+#' summarize results (e.g., statistics of differential abundance) relevant to
+#' the range. Rows may or may not have row names; they often will not.
 #' @return A \code{\link{BSDMCs-class}}
 #' @examples
 #' set.seed(1980)
