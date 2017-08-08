@@ -27,6 +27,6 @@ OBJ3 <- methHMMCMC(OBJ2, mc.cores=2)
 OBJ3
 
 ## ---- eval=TRUE, message=FALSE-------------------------------------------
-OBJ4 <- findDMCs(OBJ3, mc.cores=detectCores())
+OBJ4 <- findDMCs(OBJ3, mc.cores=2)
 head(metadata(OBJ4)$DMCHMM)
 

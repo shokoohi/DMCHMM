@@ -1,10 +1,11 @@
 
 ------------------------
-CHANGES IN VERSION 0.99.3
+CHANGES IN VERSION 0.99.9
 ----------------------
 CHANGES SINCE LAST TIME
     o Some parameters in examples are changed to make the running time faster.
     o The BSData-method is changed to cBSData-method.
+    o The BSDMCs-method is changed to cBSDMCs-method.
 
  BUG FIXES
     o None reported.
@@ -14,7 +15,7 @@ CHANGES SINCE LAST TIME
 CHANGES IN VERSION 0.99.0
 ----------------------
 IMPROVEMENTS SINCE LAST TIME
-    o We have refined some of the codes to speed up the package.
+    o We have refined some of the codes to speed up the running the package.
 
 FUTURE DEVELOPMENT
     o Some functions will be rewitten in C.

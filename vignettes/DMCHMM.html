@@ -202,7 +202,7 @@ OBJ1</code></pre></div>
 <div id="identifying-dmcs" class="section level2">
 <h2>Identifying DMCs</h2>
 <p>Having smoothed the data using HMM, we run linear between predicted methylation levels and grouping covariate. In case other covariates exist, one can use the <code>formula</code> argument to specify a linear model. When there is no covariates no action is required. The following command identifys the DMCs. The results are stored in a <code>BSDMCs-class</code> and can be retrived by calling <code>metadata</code> command.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ4 &lt;-<span class="st"> </span><span class="kw">findDMCs</span>(OBJ3, <span class="dt">mc.cores=</span><span class="kw">detectCores</span>())</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ4 &lt;-<span class="st"> </span><span class="kw">findDMCs</span>(OBJ3, <span class="dt">mc.cores=</span><span class="dv">2</span>)</code></pre></div>
 <pre><code>## 
   |                                                                       
   |                                                                 |   0%
@@ -477,13 +477,13 @@ OBJ1</code></pre></div>
   |                                                                       
   |=================================================================| 100%</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">metadata</span>(OBJ4)$DMCHMM)</code></pre></div>
-<pre><code>##   DMCs    pvalues qvalues DMCsGroupG1vsG2 methDirGroupG1vsG2
-## 1    0 0.28480037       1               0               hypo
-## 2    0 0.73559502       1               0              equal
-## 3    0 0.68578299       1               0              hyper
-## 4    0 0.08453235       1               0               hypo
-## 5    0 0.47456152       1               0               hypo
-## 6    0 0.56459685       1               0              hyper</code></pre>
+<pre><code>##   DMCs   pvalues   qvalues DMCsGroupG1vsG2 methDirGroupG1vsG2
+## 1    0 0.6545251 0.9519417               0               hypo
+## 2    0 0.2262519 0.8725646               0              hyper
+## 3    0 0.1108418 0.8688319               0               hypo
+## 4    0 0.2835149 0.8956167               0              hyper
+## 5    0 0.3861861 0.9211806               0              hyper
+## 6    0 0.6826608 0.9538309               0              equal</code></pre>
 </div>
 
 

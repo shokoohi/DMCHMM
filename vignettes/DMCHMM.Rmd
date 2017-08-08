@@ -119,6 +119,6 @@ action is required. The following command identifys the DMCs. The results are
 stored in a `BSDMCs-class` and can be retrived by calling `metadata` command. 
 
 ```{r, eval=TRUE, message=FALSE}
-OBJ4 <- findDMCs(OBJ3, mc.cores=detectCores())
+OBJ4 <- findDMCs(OBJ3, mc.cores=2)
 head(metadata(OBJ4)$DMCHMM)
 ```
