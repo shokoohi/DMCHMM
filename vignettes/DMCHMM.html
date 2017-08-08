@@ -95,85 +95,395 @@ Notwithstanding that diverse methods and software have created ample opportuniti
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DMCHMM)
 fn &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="dt">package =</span> <span class="st">&quot;DMCHMM&quot;</span>))
 fn.f &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="dt">package=</span><span class="st">&quot;DMCHMM&quot;</span>), <span class="dt">full.names=</span><span class="ot">TRUE</span>)
-OBJ &lt;-<span class="st"> </span><span class="kw">readBismark</span>(fn.f, fn)
-cdOBJ &lt;-<span class="st"> </span><span class="kw">DataFrame</span>(<span class="dt">Cell =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;BC&quot;</span>, <span class="st">&quot;TC&quot;</span>,<span class="st">&quot;Mono&quot;</span>),
+OBJ &lt;-<span class="st"> </span><span class="kw">readBismark</span>(fn.f, fn)</code></pre></div>
+<pre><code>## Processing sample blk.BCU1568_BC_BS_1 ... 
+## Processing sample blk.BCU173_TC_BS_1 ... 
+## Processing sample blk.BCU551_Mono_BS_1 ... 
+## Building BSData object.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cdOBJ &lt;-<span class="st"> </span><span class="kw">DataFrame</span>(<span class="dt">Cell =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;BC&quot;</span>, <span class="st">&quot;TC&quot;</span>,<span class="st">&quot;Mono&quot;</span>),
 <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;BC&quot;</span>, <span class="st">&quot;TC&quot;</span>, <span class="st">&quot;Mono&quot;</span>)), <span class="dt">row.names =</span> <span class="kw">c</span>(<span class="st">&quot;BCU1568&quot;</span>,<span class="st">&quot;BCU173&quot;</span>,<span class="st">&quot;BCU551&quot;</span>))
 <span class="kw">colData</span>(OBJ) &lt;-<span class="st"> </span>cdOBJ
 OBJ</code></pre></div>
-<pre><code> output: 
-    class: BSData 
-    dim: 25668 3 
-    metadata(0):
-    assays(2): totalReads methReads
-    rownames(25668): 1 2 ... 25667 25668
-    rowData names(0):
-    colnames(3): BCU1568 BCU173 BCU551
-    colData names(1): Cell</code></pre>
+<pre><code>## class: BSData 
+## dim: 25668 3 
+## metadata(0):
+## assays(2): totalReads methReads
+## rownames(25668): 1 2 ... 25667 25668
+## rowData names(0):
+## colnames(3): BCU1568 BCU173 BCU551
+## colData names(1): Cell</code></pre>
 </div>
 <div id="simulating-bs-seq-data" class="section level2">
 <h2>Simulating BS-Seq data</h2>
 <p>The above data set only include one sample for each cell type. We need more samples to be able to compare their methylations and find DMCs. For illustration we generate a sample of BS-Seq data as follows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nr &lt;-<span class="st"> </span><span class="dv">500</span>; nc &lt;-<span class="st"> </span><span class="dv">8</span>
-metht &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">as.integer</span>(<span class="kw">runif</span>(nr *<span class="st"> </span>nc, <span class="dv">0</span>, <span class="dv">100</span>)), nr)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nr &lt;-<span class="st"> </span><span class="dv">200</span>; nc &lt;-<span class="st"> </span><span class="dv">8</span>
+metht &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">as.integer</span>(<span class="kw">runif</span>(nr *<span class="st"> </span>nc, <span class="dv">0</span>, <span class="dv">20</span>)), nr)
 methc &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rbinom</span>(<span class="dt">n=</span>nr*nc,<span class="kw">c</span>(metht),<span class="dt">prob =</span> <span class="kw">runif</span>(nr*nc)),nr,nc)
 r1 &lt;-<span class="st"> </span><span class="kw">GRanges</span>(<span class="kw">rep</span>(<span class="st">&quot;chr1&quot;</span>, nr), <span class="kw">IRanges</span>(<span class="dv">1</span>:nr, <span class="dt">width=</span><span class="dv">1</span>), <span class="dt">strand=</span><span class="st">&quot;*&quot;</span>)
 <span class="kw">names</span>(r1) &lt;-<span class="st"> </span><span class="dv">1</span>:nr
 cd1 &lt;-<span class="st"> </span><span class="kw">DataFrame</span>(<span class="dt">Group=</span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;G1&quot;</span>,<span class="st">&quot;G2&quot;</span>),<span class="dt">each=</span>nc/<span class="dv">2</span>),<span class="dt">row.names=</span>LETTERS[<span class="dv">1</span>:nc])
 OBJ1 &lt;-<span class="st"> </span><span class="kw">cBSData</span>(<span class="dt">rowRanges=</span>r1,<span class="dt">methReads=</span>methc,<span class="dt">totalReads=</span>metht,<span class="dt">colData=</span>cd1)
 OBJ1</code></pre></div>
-<pre><code>output: 
-    class: BSData 
-    dim: 500 8 
-    metadata(0):
-    assays(4): methReads totalReads
-    rownames(500): 1 2 ... 499 500
-    rowData names(0):
-    colnames(8): A B ... G H
-    colData names(1): Group</code></pre>
+<pre><code>## class: BSData 
+## dim: 200 8 
+## metadata(0):
+## assays(2): totalReads methReads
+## rownames(200): 1 2 ... 199 200
+## rowData names(0):
+## colnames(8): A B ... G H
+## colData names(1): Group</code></pre>
 </div>
 <div id="predicting-methylation-levels-using-hmm-and-em-algorithm" class="section level2">
 <h2>Predicting methylation levels using HMM and EM algorithm</h2>
 <p>There are two approaches to smoothed the data before testing for DMCs. Either EM or MCMC can be used to predict methylation levels utilizing HMM. The <code>methHMEM-method</code> which is developed to predict methylation levels. The output is a <code>BSDMCs-class</code> that can be either used to find DMCs or use MCMC algorithm to re-smooth the raw data. The process is as follows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ2 &lt;-<span class="st"> </span><span class="kw">methHMEM</span>(OBJ1, <span class="dt">mc.cores=</span><span class="kw">detectCores</span>())
-OBJ2</code></pre></div>
-<pre><code>output: 
-    class: BSDMCs 
-    dim: 500 8 
-    metadata(3): K Beta Pm
-    assays(4): methReads totalReads methLevels methStates
-    rownames(500): 1 2 ... 499 500
-    rowData names(0):
-    colnames(8): A B ... G H
-    colData names(1): Group</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ2 &lt;-<span class="st"> </span><span class="kw">methHMEM</span>(OBJ1, <span class="dt">MaxK=</span><span class="dv">2</span>, <span class="dt">mc.cores=</span><span class="dv">2</span>)</code></pre></div>
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   0%
+  |                                                                       
+  |========                                                         |  12%
+  |                                                                       
+  |================                                                 |  25%
+  |                                                                       
+  |========================                                         |  38%
+  |                                                                       
+  |================================                                 |  50%
+  |                                                                       
+  |=========================================                        |  62%
+  |                                                                       
+  |=================================================                |  75%
+  |                                                                       
+  |=========================================================        |  88%
+  |                                                                       
+  |=================================================================| 100%</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ2</code></pre></div>
+<pre><code>## class: BSDMCs 
+## dim: 200 8 
+## metadata(3): K Beta Pm
+## assays(4): methReads totalReads methLevels methStates
+## rownames(200): 1 2 ... 199 200
+## rowData names(0):
+## colnames(8): A B ... G H
+## colData names(1): Group</code></pre>
 </div>
 <div id="predicting-methylation-levels-using-hmm-and-mcmc-algorithm" class="section level2">
 <h2>Predicting methylation levels using HMM and MCMC algorithm</h2>
 <p>Although EM algorithm is a fast way to smooth the data but the results are not as good as the MCMC algorithm. The MCMC algorithm, however, is slow. In order to increase the speed, we first use <code>methHMEM-method</code> to find the HMM order for each sample and then we use <code>methHMCMC-method</code> to predict methylation levels. The procedure is as follows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ3 &lt;-<span class="st"> </span><span class="kw">methHMMCMC</span>(OBJ2, <span class="dt">mc.cores=</span><span class="kw">detectCores</span>())
-OBJ3</code></pre></div>
-<pre><code>output: 
-    class: BSDMCs 
-    dim: 500 8 
-    metadata(3): K Beta Pm
-    assays(4): methReads totalReads methLevels methStates
-    rownames(500): 1 2 ... 499 500
-    rowData names(0):
-    colnames(8): A B ... G H
-    colData names(1): Group</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ3 &lt;-<span class="st"> </span><span class="kw">methHMMCMC</span>(OBJ2, <span class="dt">mc.cores=</span><span class="dv">2</span>)</code></pre></div>
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   0%
+  |                                                                       
+  |========                                                         |  12%
+  |                                                                       
+  |================                                                 |  25%
+  |                                                                       
+  |========================                                         |  38%
+  |                                                                       
+  |================================                                 |  50%
+  |                                                                       
+  |=========================================                        |  62%
+  |                                                                       
+  |=================================================                |  75%
+  |                                                                       
+  |=========================================================        |  88%
+  |                                                                       
+  |=================================================================| 100%</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ3</code></pre></div>
+<pre><code>## class: BSDMCs 
+## dim: 200 8 
+## metadata(3): K Beta Pm
+## assays(4): methReads totalReads methLevels methStates
+## rownames(200): 1 2 ... 199 200
+## rowData names(0):
+## colnames(8): A B ... G H
+## colData names(1): Group</code></pre>
 </div>
 <div id="identifying-dmcs" class="section level2">
 <h2>Identifying DMCs</h2>
 <p>Having smoothed the data using HMM, we run linear between predicted methylation levels and grouping covariate. In case other covariates exist, one can use the <code>formula</code> argument to specify a linear model. When there is no covariates no action is required. The following command identifys the DMCs. The results are stored in a <code>BSDMCs-class</code> and can be retrived by calling <code>metadata</code> command.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ4 &lt;-<span class="st"> </span><span class="kw">findDMCs</span>(OBJ3, <span class="dt">mc.cores=</span><span class="kw">detectCores</span>())
-<span class="kw">head</span>(<span class="kw">metadata</span>(OBJ4)$DMCHMM)</code></pre></div>
-<pre><code>output: 
-      DMCs   pvalues   qvalues DMCsG1vsG2 methDirG1vsG2
-    1    0 0.9666323 0.9947863          0         equal
-    2    0 0.8364271 0.9939796          0         hyper
-    3    0 0.2407768 0.9793929          0         hyper
-    4    0 0.6684606 0.9924782          0          hypo
-    5    0 0.3632399 0.9862448          0         equal
-    6    0 0.4307814 0.9883764          0          hypo</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ4 &lt;-<span class="st"> </span><span class="kw">findDMCs</span>(OBJ3, <span class="dt">mc.cores=</span><span class="kw">detectCores</span>())</code></pre></div>
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   0%
+  |                                                                       
+  |=                                                                |   1%
+  |                                                                       
+  |=                                                                |   2%
+  |                                                                       
+  |==                                                               |   2%
+  |                                                                       
+  |==                                                               |   3%
+  |                                                                       
+  |==                                                               |   4%
+  |                                                                       
+  |===                                                              |   4%
+  |                                                                       
+  |===                                                              |   5%
+  |                                                                       
+  |====                                                             |   6%
+  |                                                                       
+  |=====                                                            |   7%
+  |                                                                       
+  |=====                                                            |   8%
+  |                                                                       
+  |======                                                           |   8%
+  |                                                                       
+  |======                                                           |   9%
+  |                                                                       
+  |======                                                           |  10%
+  |                                                                       
+  |=======                                                          |  10%
+  |                                                                       
+  |=======                                                          |  11%
+  |                                                                       
+  |=======                                                          |  12%
+  |                                                                       
+  |========                                                         |  12%
+  |                                                                       
+  |========                                                         |  13%
+  |                                                                       
+  |=========                                                        |  14%
+  |                                                                       
+  |==========                                                       |  15%
+  |                                                                       
+  |==========                                                       |  16%
+  |                                                                       
+  |===========                                                      |  16%
+  |                                                                       
+  |===========                                                      |  17%
+  |                                                                       
+  |===========                                                      |  18%
+  |                                                                       
+  |============                                                     |  18%
+  |                                                                       
+  |============                                                     |  19%
+  |                                                                       
+  |=============                                                    |  20%
+  |                                                                       
+  |==============                                                   |  21%
+  |                                                                       
+  |==============                                                   |  22%
+  |                                                                       
+  |===============                                                  |  22%
+  |                                                                       
+  |===============                                                  |  23%
+  |                                                                       
+  |===============                                                  |  24%
+  |                                                                       
+  |================                                                 |  24%
+  |                                                                       
+  |================                                                 |  25%
+  |                                                                       
+  |=================                                                |  26%
+  |                                                                       
+  |==================                                               |  27%
+  |                                                                       
+  |==================                                               |  28%
+  |                                                                       
+  |===================                                              |  28%
+  |                                                                       
+  |===================                                              |  29%
+  |                                                                       
+  |===================                                              |  30%
+  |                                                                       
+  |====================                                             |  30%
+  |                                                                       
+  |====================                                             |  31%
+  |                                                                       
+  |====================                                             |  32%
+  |                                                                       
+  |=====================                                            |  32%
+  |                                                                       
+  |=====================                                            |  33%
+  |                                                                       
+  |======================                                           |  34%
+  |                                                                       
+  |=======================                                          |  35%
+  |                                                                       
+  |=======================                                          |  36%
+  |                                                                       
+  |========================                                         |  36%
+  |                                                                       
+  |========================                                         |  37%
+  |                                                                       
+  |========================                                         |  38%
+  |                                                                       
+  |=========================                                        |  38%
+  |                                                                       
+  |=========================                                        |  39%
+  |                                                                       
+  |==========================                                       |  40%
+  |                                                                       
+  |===========================                                      |  41%
+  |                                                                       
+  |===========================                                      |  42%
+  |                                                                       
+  |============================                                     |  42%
+  |                                                                       
+  |============================                                     |  43%
+  |                                                                       
+  |============================                                     |  44%
+  |                                                                       
+  |=============================                                    |  44%
+  |                                                                       
+  |=============================                                    |  45%
+  |                                                                       
+  |==============================                                   |  46%
+  |                                                                       
+  |===============================                                  |  47%
+  |                                                                       
+  |===============================                                  |  48%
+  |                                                                       
+  |================================                                 |  48%
+  |                                                                       
+  |================================                                 |  49%
+  |                                                                       
+  |================================                                 |  50%
+  |                                                                       
+  |=================================                                |  50%
+  |                                                                       
+  |=================================                                |  51%
+  |                                                                       
+  |=================================                                |  52%
+  |                                                                       
+  |==================================                               |  52%
+  |                                                                       
+  |==================================                               |  53%
+  |                                                                       
+  |===================================                              |  54%
+  |                                                                       
+  |====================================                             |  55%
+  |                                                                       
+  |====================================                             |  56%
+  |                                                                       
+  |=====================================                            |  56%
+  |                                                                       
+  |=====================================                            |  57%
+  |                                                                       
+  |=====================================                            |  58%
+  |                                                                       
+  |======================================                           |  58%
+  |                                                                       
+  |======================================                           |  59%
+  |                                                                       
+  |=======================================                          |  60%
+  |                                                                       
+  |========================================                         |  61%
+  |                                                                       
+  |========================================                         |  62%
+  |                                                                       
+  |=========================================                        |  62%
+  |                                                                       
+  |=========================================                        |  63%
+  |                                                                       
+  |=========================================                        |  64%
+  |                                                                       
+  |==========================================                       |  64%
+  |                                                                       
+  |==========================================                       |  65%
+  |                                                                       
+  |===========================================                      |  66%
+  |                                                                       
+  |============================================                     |  67%
+  |                                                                       
+  |============================================                     |  68%
+  |                                                                       
+  |=============================================                    |  68%
+  |                                                                       
+  |=============================================                    |  69%
+  |                                                                       
+  |=============================================                    |  70%
+  |                                                                       
+  |==============================================                   |  70%
+  |                                                                       
+  |==============================================                   |  71%
+  |                                                                       
+  |==============================================                   |  72%
+  |                                                                       
+  |===============================================                  |  72%
+  |                                                                       
+  |===============================================                  |  73%
+  |                                                                       
+  |================================================                 |  74%
+  |                                                                       
+  |=================================================                |  75%
+  |                                                                       
+  |=================================================                |  76%
+  |                                                                       
+  |==================================================               |  76%
+  |                                                                       
+  |==================================================               |  77%
+  |                                                                       
+  |==================================================               |  78%
+  |                                                                       
+  |===================================================              |  78%
+  |                                                                       
+  |===================================================              |  79%
+  |                                                                       
+  |====================================================             |  80%
+  |                                                                       
+  |=====================================================            |  81%
+  |                                                                       
+  |=====================================================            |  82%
+  |                                                                       
+  |======================================================           |  82%
+  |                                                                       
+  |======================================================           |  83%
+  |                                                                       
+  |======================================================           |  84%
+  |                                                                       
+  |=======================================================          |  84%
+  |                                                                       
+  |=======================================================          |  85%
+  |                                                                       
+  |========================================================         |  86%
+  |                                                                       
+  |=========================================================        |  87%
+  |                                                                       
+  |=========================================================        |  88%
+  |                                                                       
+  |==========================================================       |  88%
+  |                                                                       
+  |==========================================================       |  89%
+  |                                                                       
+  |==========================================================       |  90%
+  |                                                                       
+  |===========================================================      |  90%
+  |                                                                       
+  |===========================================================      |  91%
+  |                                                                       
+  |===========================================================      |  92%
+  |                                                                       
+  |============================================================     |  92%
+  |                                                                       
+  |============================================================     |  93%
+  |                                                                       
+  |=============================================================    |  94%
+  |                                                                       
+  |==============================================================   |  95%
+  |                                                                       
+  |==============================================================   |  96%
+  |                                                                       
+  |===============================================================  |  96%
+  |                                                                       
+  |===============================================================  |  97%
+  |                                                                       
+  |===============================================================  |  98%
+  |                                                                       
+  |================================================================ |  98%
+  |                                                                       
+  |================================================================ |  99%
+  |                                                                       
+  |=================================================================| 100%</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">metadata</span>(OBJ4)$DMCHMM)</code></pre></div>
+<pre><code>##   DMCs    pvalues qvalues DMCsGroupG1vsG2 methDirGroupG1vsG2
+## 1    0 0.28480037       1               0               hypo
+## 2    0 0.73559502       1               0              equal
+## 3    0 0.68578299       1               0              hyper
+## 4    0 0.08453235       1               0               hypo
+## 5    0 0.47456152       1               0               hypo
+## 6    0 0.56459685       1               0              hyper</code></pre>
 </div>
 
 

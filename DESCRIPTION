@@ -1,7 +1,7 @@
 Package: DMCHMM
 Type: Package
 Title: Differentially Methylated CpG using Hidden Markov Model
-Version: 0.99.7
+Version: 0.99.8
 Author: Farhad Shokoohi
 Maintainer: Farhad Shokoohi <shokoohi@icloud.com>
 Description: DMCHMM is a novel profiling tool for identifying 
