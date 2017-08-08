@@ -412,7 +412,6 @@ setGeneric("findDMCs",
 #' @return A QQ plot
 #' @importFrom stats ppoints
 #' @import S4Vectors
-#' @import utils
 #' @import graphics
 #' @examples
 #' set.seed(1980)
@@ -438,7 +437,6 @@ setGeneric("qqDMCs", function(object, ...) standardGeneric("qqDMCs"))
 #' @inheritParams params
 #' @return A Manhattan plot
 #' @import S4Vectors
-#' @import utils
 #' @import graphics
 #' @importFrom calibrate textxy
 #' @examples
