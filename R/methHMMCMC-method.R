@@ -307,12 +307,13 @@
     colnames(methStates.new) <- colnames(object)
     rownames(methStates.new) <- NULL
 
-    predictedMeth <- cBSDMCs(colData = colData(object),
-    rowRanges = rowRanges(object),
+    predictedMeth <- cBSDMCs(
     methReads = methReads(object),
     totalReads = totalReads(object),
+    methLevels = methLevels.new,
     methStates = apply(methStates.new, 2, as.integer),
-    methLevels = methLevels.new
+    rowRanges = rowRanges(object),
+    colData = colData(object)
     )
     metadata(predictedMeth)$K = Khat
     metadata(predictedMeth)$Beta = Betahat

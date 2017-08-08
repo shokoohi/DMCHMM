@@ -54,9 +54,10 @@
     methLevels.new[,] <- cbind(methLevels(obj1)[ind.match.obj1,],
     methLevels(obj2)[ind.match.obj2,])
     methLevels.new[is.na(methLevels.new)] <- 0L
-    z <- cBSDMCs(colData = colData.new, rowRanges = rowRanges.new,
+    z <- cBSDMCs(
     methReads = methReads.new, totalReads = totalReads.new,
-    methLevels = methLevels.new, methStates = methStates.new
+    methLevels = methLevels.new, methStates = methStates.new,
+    rowRanges = rowRanges.new, colData = colData.new
     )
     return(z)
 }

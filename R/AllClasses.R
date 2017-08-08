@@ -140,9 +140,8 @@ setValidity("BSData", function(object){
 #' @exportClass BSDMCs
 BSDMCs <- setClass("BSDMCs",
     representation(methReads = "matrix", totalReads = "matrix",
-    methLevels = "matrix",
-    methStates = "matrix"),
-    prototype (methReads = matrix(),totalReads = matrix(),
+    methLevels = "matrix", methStates = "matrix"),
+    prototype (methReads = matrix(), totalReads = matrix(),
     methLevels = matrix(), methStates = matrix()),
     contains = "RangedSummarizedExperiment")
 

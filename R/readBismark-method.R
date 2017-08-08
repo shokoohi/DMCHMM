@@ -52,13 +52,13 @@
     rownames(tReads) <- names(fData)
     rownames(mReads) <- names(fData)
 
-    rrbs = cBSData(
+    BSDAT = cBSData(
         colData = colData,
         rowRanges = fData,
         methReads = mReads,
         totalReads = tReads)
 
-    return(rrbs)
+    return(BSDAT)
 }
 
 #' @rdname readBismark-method
