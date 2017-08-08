@@ -12,8 +12,8 @@ sequencing data.
 }
 \section{\code{DMCHMM} methods}{
 
-\code{\link{BSData}},
-\code{\link{BSDMCs}},
+\code{\link{cBSData}},
+\code{\link{cBSDMCs}},
 \code{\link{methHMEM}},
 \code{\link{methHMMCMC}},
 \code{\link{findDMCs}},

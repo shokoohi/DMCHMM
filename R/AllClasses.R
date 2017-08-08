@@ -89,7 +89,7 @@ NULL
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1<-DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ1<-BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+#' OBJ1<-cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 #' OBJ1
 #' @exportClass BSData
 BSData <- setClass("BSData",
@@ -134,7 +134,7 @@ setValidity("BSData", function(object){
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ2 <- BSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
+#' OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
 #' methLevels=methl,methStates=meths,colData=cd1)
 #' OBJ2
 #' @exportClass BSDMCs

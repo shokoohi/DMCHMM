@@ -307,7 +307,7 @@
     colnames(methStates.new) <- colnames(object)
     rownames(methStates.new) <- NULL
 
-    predictedMeth <- BSDMCs(colData = colData(object),
+    predictedMeth <- cBSDMCs(colData = colData(object),
     rowRanges = rowRanges(object),
     methReads = methReads(object),
     totalReads = totalReads(object),

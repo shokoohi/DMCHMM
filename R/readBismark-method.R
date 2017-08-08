@@ -52,7 +52,7 @@
     rownames(tReads) <- names(fData)
     rownames(mReads) <- names(fData)
 
-    rrbs = BSData(
+    rrbs = cBSData(
         colData = colData,
         rowRanges = fData,
         methReads = mReads,

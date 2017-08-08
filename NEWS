@@ -1,16 +1,17 @@
 
 ------------------------
-CHANGES IN VERSION 0.1.0
+CHANGES IN VERSION 0.99.3
 ----------------------
 CHANGES SINCE LAST TIME
-    o None made.
+    o Some parameters in examples are changed to make the running time faster.
+    o The BSData-method is changed to cBSData-method.
 
  BUG FIXES
     o None reported.
 
 
 ------------------------
-CHANGES IN VERSION 0.0.9
+CHANGES IN VERSION 0.99.0
 ----------------------
 IMPROVEMENTS SINCE LAST TIME
     o We have refined some of the codes to speed up the package.

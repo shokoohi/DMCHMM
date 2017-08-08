@@ -5,46 +5,6 @@
 \alias{BSDMCs-class}
 \alias{BSDMCs}
 \title{BSDMCs object}
-\usage{
-BSDMCs(methReads, totalReads, methLevels, methStates, rowRanges,
-  colData = DataFrame(row.names = colnames(methReads)), metadata = list(),
-  ...)
-}
-\arguments{
-\item{methReads}{The matrix \code{methReads} contains the number of
-methylated reads spanning a CpG-site. The rows represent the CpG sites in
-\code{rowRanges} and the columns represent the samples in \code{colData}.}
-
-\item{totalReads}{The matrix \code{totalReads} contains the number of reads
-spanning a CpG-site. The rows represent the CpG sites in \code{rowRanges}
-and the columns represent the samples in \code{colData}.}
-
-\item{methLevels}{The matrix \code{methLevels} contains the predicted
-methylation level spanning a CpG-site using Hidden Markov model. The rows
-represent the CpG sites in \code{rowRanges} and the columns represent the
-samples in \code{colData}.}
-
-\item{methStates}{The matrix \code{methStates} contains the state of
-methylation obtained from Hidden Markov model spanning a CpG-site. The rows
-represent the CpG sites in \code{rowRanges} and the columns represent the
-samples in \code{colData}. The value of state is stored in \code{metadata},
-named \code{Beta}.}
-
-\item{rowRanges}{A \code{\link{GRanges}} or \code{\link{GRangesList}}
-object describing the ranges of interest. Names, if present, become the row
-names of the \code{\link{SummarizedExperiment}} object. The length of the
-\code{\link{GRanges}} or \code{\link{GRangesList}} must equal the number of
-rows of the matrices in \code{assays}. If \code{rowRanges} is missing, a
-\code{\link{SummarizedExperiment}} instance is returned.}
-
-\item{colData}{Object of class \code{"DataFrame"} containing information on
-variable values of the samples}
-
-\item{metadata}{An optional \code{list} of arbitrary content describing the
-overall experiment}
-
-\item{...}{other possible parameters}
-}
 \value{
 A \code{\link{BSDMCs-class}} object
 }
@@ -73,7 +33,7 @@ methl <- methc/metht
 r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 names(r1) <- 1:nr
 cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-OBJ2 <- BSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
+OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
 methLevels=methl,methStates=meths,colData=cd1)
 OBJ2
 }

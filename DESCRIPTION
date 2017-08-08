@@ -1,7 +1,7 @@
 Package: DMCHMM
 Type: Package
 Title: Differentially Methylated CpG using Hidden Markov Model
-Version: 0.99.2
+Version: 0.99.3
 Author: Farhad Shokoohi
 Maintainer: Farhad Shokoohi <shokoohi@icloud.com>
 Description: DMCHMM is a novel profiling tool for identifying 
@@ -32,7 +32,7 @@ VignetteBuilder:
     knitr
 biocViews: DifferentialMethylation, Sequencing, HiddenMarkovModel, Coverage
 License: GPL (>= 3)
-Date: 2017-06-23
+Date: 2017-08-08
 Encoding: UTF-8
 LazyData: true
 BugReports: https://github.com/shokoohi/DMCHMM/issues

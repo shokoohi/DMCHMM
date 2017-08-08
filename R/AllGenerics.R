@@ -1,7 +1,7 @@
-#' @title BSData method
+#' @title cBSData method
 #' @description Creates a \code{\link{BSData-class}} object
 #' @author Farhad Shokoohi <shokoohi@icloud.com>
-#' @name BSData-method
+#' @name cBSData-method
 #' @import S4Vectors
 #' @inheritParams params
 #' @details The rows of a \code{BSData} object represent ranges (in genomic
@@ -22,13 +22,13 @@
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ1 <- BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+#' OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 #' OBJ1
-#' @exportMethod BSData
-setGeneric("BSData",
+#' @exportMethod cBSData
+setGeneric("cBSData",
     function(methReads, totalReads, rowRanges,
     colData=DataFrame(row.names=colnames(methReads)), metadata = list(), ...)
-    standardGeneric("BSData"),
+    standardGeneric("cBSData"),
     signature=c("methReads", "totalReads", "rowRanges"))
 
 #' @title methReads method
@@ -45,7 +45,7 @@ setGeneric("BSData",
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ1 <- BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+#' OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 #' methReads(OBJ1)
 #' @exportMethod methReads
 setGeneric("methReads", function(object) standardGeneric("methReads"))
@@ -75,7 +75,7 @@ setGeneric("methReads<-",function(object, value) standardGeneric("methReads<-"))
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ1 <- BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+#' OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 #' totalReads(OBJ1)
 #' @exportMethod totalReads
 setGeneric("totalReads", function(object) standardGeneric("totalReads"))
@@ -92,10 +92,10 @@ setGeneric("totalReads", function(object) standardGeneric("totalReads"))
 setGeneric("totalReads<-",
     function(object, value) standardGeneric("totalReads<-"))
 
-#' @title BSDMCs method
+#' @title cBSDMCs method
 #' @description Creates a \code{\link{BSDMCs-class}} object
 #' @author Farhad Shokoohi <shokoohi@icloud.com>
-#' @name BSDMCs-method
+#' @name cBSDMCs-method
 #' @import S4Vectors
 #' @inheritParams params
 #' @details The rows of a \code{BSDMCs} object represent
@@ -110,14 +110,14 @@ setGeneric("totalReads<-",
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ2 <- BSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
+#' OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
 #' methLevels=methl,methStates=meths,colData=cd1)
 #' OBJ2
-#' @exportMethod BSDMCs
-setGeneric("BSDMCs",
+#' @exportMethod cBSDMCs
+setGeneric("cBSDMCs",
     function(methReads, totalReads, methLevels, methStates, rowRanges,
     colData=DataFrame(row.names=colnames(methReads)), metadata = list(), ... )
-    standardGeneric("BSDMCs"),
+    standardGeneric("cBSDMCs"),
     signature=c("methReads", "totalReads", "methLevels", "methStates",
     "rowRanges"))
 
@@ -175,7 +175,7 @@ setGeneric("totalReads<-",
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ2 <- BSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
+#' OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
 #' methLevels=methl,methStates=meths,colData=cd1)
 #' methLevels(OBJ2)
 #' @exportMethod methLevels
@@ -210,7 +210,7 @@ setGeneric("methLevels<-",
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ2 <- BSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
+#' OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
 #' methLevels=methl,methStates=meths,colData=cd1)
 #' methStates(OBJ2)
 #' @exportMethod methStates
@@ -244,10 +244,10 @@ setGeneric("methStates<-",
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep("G1",each=nc),row.names=LETTERS[1:nc])
-#' OBJ1 <- BSData(rowRanges=r1,methReads=methc[,1:nc],totalReads=metht[,1:nc],
+#' OBJ1 <- cBSData(rowRanges=r1,methReads=methc[,1:nc],totalReads=metht[,1:nc],
 #' colData=cd1)
 #' cd2 <- DataFrame(Group=rep("G2",each=nc),row.names=LETTERS[nc+1:nc])
-#' OBJ2 <- BSData(rowRanges=r1,methReads=methc[,nc+1:nc],totalReads=
+#' OBJ2 <- cBSData(rowRanges=r1,methReads=methc[,nc+1:nc],totalReads=
 #' metht[,nc+1:nc],colData=cd2)
 #' OBJ3 <- combine(OBJ1, OBJ2)
 #' OBJ3
@@ -311,7 +311,7 @@ setGeneric("writeBED", function(object, name, file) standardGeneric("writeBED"))
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ1 <- BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+#' OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 #' OBJ2 <- methHMEM(OBJ1, MaxK=2, mc.cores=2)
 #' OBJ2
 #' @exportMethod methHMEM
@@ -348,7 +348,7 @@ setGeneric("methHMEM",
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ1 <- BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+#' OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 #' OBJ2 <- methHMEM(OBJ1, MaxK=2, mc.cores=2)
 #' OBJ3 <- methHMMCMC(OBJ2, mc.cores=2)
 #' OBJ3
@@ -384,7 +384,7 @@ setGeneric("methHMMCMC",
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ1 <- BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+#' OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 #' OBJ2 <- methHMEM(OBJ1, MaxK=2, mc.cores=2)
 #' OBJ3 <- methHMMCMC(OBJ2, mc.cores=2)
 #' OBJ4 <- findDMCs(OBJ3, mc.cores=2)
@@ -413,7 +413,7 @@ setGeneric("findDMCs",
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ1 <- BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+#' OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 #' OBJ2 <- methHMEM(OBJ1, MaxK=2, mc.cores=2)
 #' OBJ3 <- methHMMCMC(OBJ2, mc.cores=2)
 #' OBJ4 <- findDMCs(OBJ3, mc.cores=2)
@@ -440,7 +440,7 @@ setGeneric("qqDMCs", function(object, ...) standardGeneric("qqDMCs"))
 #' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-#' OBJ1 <- BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+#' OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 #' OBJ2 <- methHMEM(OBJ1, MaxK=2, mc.cores=2)
 #' OBJ3 <- methHMMCMC(OBJ2, mc.cores=2)
 #' OBJ4 <- findDMCs(OBJ3, mc.cores=2)

@@ -2,29 +2,32 @@ citHeader("To cite DMCHMM in publications use:")
 
 citEntry(entry = "Manual",
          title = paste('DMCHMM: an R package to identify differentially
-         methylated CpG site using Hidden Markov models, Version 0.99.0'),
+         methylated CpG Sites using Hidden Markov Models, Version 0.99.3'),
          author = c(person("Farhad", "Shokoohi")),
          year = '2017',
          url = 'http://bioconductor.org/packages/DMCHMM/',
          textVersion  =
            paste('Farhad Shokoohi (2017) DMCHMM: an R package to identify
-           differentially methylated CpG site using Hidden Markov models,
-           Version 0.99.0 ',
+           differentially methylated CpG Sites using Hidden Markov Models,
+           Version 0.99.3 ',
            'URL  http://bioconductor.org/packages/DMCHMM/', sep="")
 )
 
 citEntry(entry = "Article",
-    title = "DMCHMM: an R package to identify differentially methylated CpG
-    site using Hidden Markov models",
+    title = "A Novel Profiling Method for Identifying Differentially
+    Methylated Sites in Bisulfite Sequencing Data",
          author = c(person("Farhad", "Shokoohi"),
                     person("David", "Stephens"),
+                    person("Guillaume", "Bourque"),
+                    person("Tomi", "Pastinen"),
                     person("Celia", "Greenwood"),
-                    person("aurelie", "Labbe")),
+                    person("Aurelie", "Labbe")),
          year = '2017',
-         journal = "to be submitted",
+         journal = "submitted",
          textVersion =
-           paste('Shokoohi F., Stephens D., Greenwood C., and Labbe A. (2017).',
-         'DMCHMM: an R package to identify differentially methylated CpG
-         site using Hidden Markov models',
-                 'to be submitted' )
+           paste('Shokoohi F., Stephens D., Bourque G., Pastinen T.,
+           Greenwood C. and Labbe A. (2017)',
+         'A Novel Profiling Method for Identifying Differentially
+         Methylated Sites in Bisulfite Sequencing Data',
+                 'submitted' )
 )

@@ -18,7 +18,7 @@
     totalReads.new[,] <- cbind(totalReads(obj1)[ind.match.obj1,],
     totalReads(obj2)[ind.match.obj2,])
     totalReads.new[is.na(totalReads.new)] <- 0L
-    z <- BSData(colData = colData.new, rowRanges = rowRanges.new,
+    z <- cBSData(colData = colData.new, rowRanges = rowRanges.new,
     methReads = methReads.new, totalReads = totalReads.new
     )
     return(z)
@@ -54,7 +54,7 @@
     methLevels.new[,] <- cbind(methLevels(obj1)[ind.match.obj1,],
     methLevels(obj2)[ind.match.obj2,])
     methLevels.new[is.na(methLevels.new)] <- 0L
-    z <- BSDMCs(colData = colData.new, rowRanges = rowRanges.new,
+    z <- cBSDMCs(colData = colData.new, rowRanges = rowRanges.new,
     methReads = methReads.new, totalReads = totalReads.new,
     methLevels = methLevels.new, methStates = methStates.new
     )

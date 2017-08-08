@@ -37,7 +37,7 @@ Following topics will be discussed in this vignette:
 
 Two different classes are defined by extending the 
 `SummarizedExperiment-class`. The `BSData-class` is designed to hold BS-Seq 
-data. Similarly, `BSData-method` is defined to create a `BSData` object. 
+data. Similarly, `cBSData-method` is defined to create a `BSData` object. 
 This class includes two slots:
 the `methReads`, a matrix with columns representing samples and rows 
 representing genomic positions (CpG sites) and elements of matrix representing 
@@ -89,7 +89,7 @@ methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
 names(r1) <- 1:nr
 cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
-OBJ1 <- BSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
+OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 OBJ1
 ```
 
