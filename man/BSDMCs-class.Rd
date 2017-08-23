@@ -5,6 +5,26 @@
 \alias{BSDMCs-class}
 \alias{BSDMCs}
 \title{BSDMCs object}
+\arguments{
+\item{methReads}{The matrix \code{methReads} contains the number of
+methylated reads spanning a CpG-site. The rows represent the CpG sites in
+\code{rowRanges} and the columns represent the samples in \code{colData}.}
+
+\item{totalReads}{The matrix \code{totalReads} contains the number of reads
+spanning a CpG-site. The rows represent the CpG sites in \code{rowRanges}
+and the columns represent the samples in \code{colData}.}
+
+\item{methLevels}{The matrix \code{methLevels} contains the predicted
+methylation level spanning a CpG-site using Hidden Markov model. The rows
+represent the CpG sites in \code{rowRanges} and the columns represent the
+samples in \code{colData}.}
+
+\item{methStates}{The matrix \code{methStates} contains the state of
+methylation obtained from Hidden Markov model spanning a CpG-site. The rows
+represent the CpG sites in \code{rowRanges} and the columns represent the
+samples in \code{colData}. The value of state is stored in \code{metadata},
+named \code{Beta}.}
+}
 \value{
 A \code{\link{BSDMCs-class}} object
 }

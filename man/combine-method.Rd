@@ -34,12 +34,12 @@ set.seed(1980)
 nr <- 200; nc <- 8
 metht <- matrix(as.integer(runif(nr * nc*2, 0, nr)), nr)
 methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc*2)),nr,nc*2)
-r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
+r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
 names(r1) <- 1:nr
-cd1 <- DataFrame(Group=rep("G1",each=nc),row.names=LETTERS[1:nc])
+cd1 <- DataFrame(Group=rep('G1',each=nc),row.names=LETTERS[1:nc])
 OBJ1 <- cBSData(rowRanges=r1,methReads=methc[,1:nc],totalReads=metht[,1:nc],
 colData=cd1)
-cd2 <- DataFrame(Group=rep("G2",each=nc),row.names=LETTERS[nc+1:nc])
+cd2 <- DataFrame(Group=rep('G2',each=nc),row.names=LETTERS[nc+1:nc])
 OBJ2 <- cBSData(rowRanges=r1,methReads=methc[,nc+1:nc],totalReads=
 metht[,nc+1:nc],colData=cd2)
 OBJ3 <- combine(OBJ1, OBJ2)

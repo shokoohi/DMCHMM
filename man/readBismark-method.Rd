@@ -35,11 +35,11 @@ A \code{\link{BSData-class}} object
 reads BS-Seq data
 }
 \examples{
-fn <- list.files(system.file("extdata",package = "DMCHMM"))
-fn.f <- list.files(system.file("extdata",package="DMCHMM"), full.names=TRUE)
+fn <- list.files(system.file('extdata',package = 'DMCHMM'))
+fn.f <- list.files(system.file('extdata',package='DMCHMM'), full.names=TRUE)
 OBJ <- readBismark(fn.f, fn)
-cdOBJ <- DataFrame(Cell = factor(c("BC", "TC","Mono"),
-labels = c("BC", "TC", "Mono")), row.names = c("BCU1568","BCU173","BCU551"))
+cdOBJ <- DataFrame(Cell = factor(c('BC', 'TC','Mono'),
+labels = c('BC', 'TC', 'Mono')), row.names = c('BCU1568','BCU173','BCU551'))
 colData(OBJ) <- cdOBJ
 OBJ
 }

@@ -1,8 +1,8 @@
-.methStates <- function(object){
+.methStates <- function(object) {
     return(assays(object)$methStates)
 }
 
-.replace.methStates <- function(object, value){
+.replace.methStates <- function(object, value) {
     assays(object)$methStates <- value
     return(object)
 }
@@ -13,5 +13,5 @@ setMethod("methStates", signature(object = "BSDMCs"), .methStates)
 
 #' @rdname methStates-method
 #' @aliases methStates-method methStates<-
-setReplaceMethod("methStates", signature(object = "BSDMCs", value = "matrix"),
+setReplaceMethod("methStates", signature(object = "BSDMCs", value = "matrix"), 
     .replace.methStates)

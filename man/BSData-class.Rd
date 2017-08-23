@@ -5,6 +5,15 @@
 \alias{BSData-class}
 \alias{BSData}
 \title{BSData object}
+\arguments{
+\item{methReads}{The matrix \code{methReads} contains the number of
+methylated reads spanning a CpG-site. The rows represent the CpG sites in
+\code{rowRanges} and the columns represent the samples in \code{colData}.}
+
+\item{totalReads}{The matrix \code{totalReads} contains the number of reads
+spanning a CpG-site. The rows represent the CpG sites in \code{rowRanges}
+and the columns represent the samples in \code{colData}.}
+}
 \value{
 A \code{\link{BSData-class}} object
 }

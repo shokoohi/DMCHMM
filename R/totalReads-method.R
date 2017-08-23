@@ -1,8 +1,8 @@
-.totalReads <- function(object){
+.totalReads <- function(object) {
     return(assays(object)$totalReads)
 }
 
-.replace.totalReads <- function(object, value){
+.replace.totalReads <- function(object, value) {
     assays(object)$totalReads <- value
     return(object)
 }
@@ -13,7 +13,7 @@ setMethod("totalReads", signature(object = "BSData"), .totalReads)
 
 #' @rdname totalReads-method
 #' @aliases totalReads-method totalReads<-
-setReplaceMethod("totalReads", signature(object = "BSData", value = "matrix"),
+setReplaceMethod("totalReads", signature(object = "BSData", value = "matrix"), 
     .replace.totalReads)
 
 #' @rdname totalReads-method
@@ -22,5 +22,5 @@ setMethod("totalReads", signature(object = "BSDMCs"), .totalReads)
 
 #' @rdname totalReads-method
 #' @aliases totalReads-method totalReads<-
-setReplaceMethod("totalReads", signature(object = "BSDMCs", value = "matrix"),
+setReplaceMethod("totalReads", signature(object = "BSDMCs", value = "matrix"), 
     .replace.totalReads)

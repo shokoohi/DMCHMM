@@ -1,11 +1,9 @@
-.onAttach <- function(lib, pkg){
-    pkgversion <- utils::packageVersion("DMCHMM")
-    pkgdate <- utils::packageDescription("DMCHMM")$Date
-    pkgdescrip <- utils::packageDescription("DMCHMM")$Description
-    pkgBugReports <- utils::packageDescription("DMCHMM")$BugReports
-    packageStartupMessage(
-        paste('DMCHMM package, Version ',pkgversion,', Released ',pkgdate,'\n',
-    pkgdescrip, '\nBugReports: ',pkgBugReports , sep = "")
+.onAttach <- function(lib, pkg) {
+    packageStartupMessage("DMCHMM package, Version ",
+                                utils::packageVersion("DMCHMM"),
+        ", Released ", utils::packageDescription("DMCHMM")$Date,
+        "\n", utils::packageDescription("DMCHMM")$Description,
+        "\nBugReports: ", utils::packageDescription("DMCHMM")$BugReports
     )
 }
 
