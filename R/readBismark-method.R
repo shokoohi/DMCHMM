@@ -66,18 +66,18 @@ setMethod("readBismark", signature(files = "character", colData = "DataFrame"),
 
 #' @rdname readBismark-method
 #' @aliases readBismark-method readBismark
-setMethod("readBismark",
-          signature = c(files = "character", colData = "data.frame"),
-          function(files, colData) {
-              colData = as(colData, "DataFrame")
-              .readBismark(files, colData)
+setMethod("readBismark", signature = c(files = "character",
+                                        colData = "data.frame"),
+            function(files, colData) {
+                colData = as(colData, "DataFrame")
+                .readBismark(files, colData)
     })
 
 #' @rdname readBismark-method
 #' @aliases readBismark-method readBismark
-setMethod("readBismark",
-          signature = c(files = "character", colData = "character"),
-          function(files, colData) {
-              colData = DataFrame(row.names = colData)
-              .readBismark(files, colData)
+setMethod("readBismark", signature = c(files = "character",
+                                        colData = "character"),
+            function(files, colData) {
+                colData = DataFrame(row.names = colData)
+                .readBismark(files, colData)
     })

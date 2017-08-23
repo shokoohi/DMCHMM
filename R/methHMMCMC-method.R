@@ -272,9 +272,9 @@
     optbp <- MulticoreParam(workers = mc.cores, progressbar = TRUE)
     .mfun2 <- function(j){
         .runMCMC.M(c(assays(object)$methReads[, j]),
-                   c(assays(object)$totalReads[, j]), c(metadata(object)$K[j]),
-                   metadata(object)$Beta[[j]], c(assays(object)$methStates[,j]),
-                   metadata(object)$Pm[[j]], nburn, nthin, nsamp, useweight)
+                c(assays(object)$totalReads[, j]), c(metadata(object)$K[j]),
+                metadata(object)$Beta[[j]], c(assays(object)$methStates[,j]),
+                metadata(object)$Pm[[j]], nburn, nthin, nsamp, useweight)
     }
     totres2 <- bplapply(seq_len(nSam), .mfun2, BPPARAM = optbp)
 
@@ -298,10 +298,9 @@
     Betahat <- lapply(totres2, function(elt) elt$p.ests)
     Phat <- lapply(totres2, function(elt) elt$p.U.ests)
     methLevels.new <- vapply(totres2, function(elt) elt$X.estimate,
-                             numeric(nPos))
+                                numeric(nPos))
     methStates.new <- vapply(totres2, function(elt) apply(elt$xMCMC$Prob.U.vec,
-                                                          1, which.max) - 1,
-                             numeric(nPos))
+                                1, which.max) - 1, numeric(nPos))
     storage.mode(methStates.new) <- "integer"
 
     #Khat = c()
@@ -324,11 +323,11 @@
     rownames(methStates.new) <- NULL
 
     predictedMeth <- cBSDMCs(methReads = methReads(object),
-                             totalReads = totalReads(object),
-                             methLevels = methLevels.new,
-                             methStates = apply(methStates.new, 2, as.integer),
-                             rowRanges = rowRanges(object),
-                             colData = colData(object))
+                            totalReads = totalReads(object),
+                            methLevels = methLevels.new,
+                            methStates = apply(methStates.new, 2, as.integer),
+                            rowRanges = rowRanges(object),
+                            colData = colData(object))
     metadata(predictedMeth)$K = Khat
     metadata(predictedMeth)$Beta = Betahat
     metadata(predictedMeth)$Pm = Phat

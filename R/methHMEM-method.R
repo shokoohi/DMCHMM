@@ -261,8 +261,8 @@
     optbp <- MulticoreParam(workers = mc.cores, progressbar = TRUE)
     .mfun <- function(itr){
         .runEM.M(c(assays(object)$methReads[, itr]),
-                 c(assays(object)$totalReads[, itr]), MaxK, MaxEmiter, epsEM,
-                 useweight)
+                c(assays(object)$totalReads[, itr]), MaxK, MaxEmiter, epsEM,
+                useweight)
     }
     totres <- bplapply(seq_len(nSam), .mfun, BPPARAM = optbp)
 
@@ -286,9 +286,9 @@
     Betahat <- lapply(totres, function(elt) elt$xEM$beta)
     Phat <- lapply(totres, function(elt) elt$xEM$Pm)
     methLevels.new <- vapply(totres, function(elt) elt$xEM$X.estimate,
-                             numeric(nPos))
+                            numeric(nPos))
     methStates.new <- vapply(totres, function(elt) elt$xEM$X.smooth - 1,
-                             numeric(nPos))
+                            numeric(nPos))
     storage.mode(methStates.new) <- "integer"
 
     #Khat = c()
@@ -309,11 +309,11 @@
     rownames(methStates.new) <- NULL
 
     predictedMeth <- cBSDMCs(methReads = methReads(object),
-                             totalReads = totalReads(object),
-                             methStates = apply(methStates.new, 2, as.integer),
-                             methLevels = methLevels.new,
-                             colData = colData(object),
-                             rowRanges = rowRanges(object))
+                            totalReads = totalReads(object),
+                            methStates = apply(methStates.new, 2, as.integer),
+                            methLevels = methLevels.new,
+                            colData = colData(object),
+                            rowRanges = rowRanges(object))
     metadata(predictedMeth)$K = Khat
     metadata(predictedMeth)$Beta = Betahat
     metadata(predictedMeth)$Pm = Phat

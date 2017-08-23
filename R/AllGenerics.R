@@ -16,7 +16,7 @@
 #' the range. Rows may or may not have row names; they often will not.
 #' @return A \code{\link{BSData-class}} object
 #' @examples
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
@@ -25,9 +25,9 @@
 #' OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 #' OBJ1
 #' @exportMethod cBSData
-setGeneric("cBSData", function(methReads, totalReads, rowRanges,
-    colData = DataFrame(row.names = colnames(methReads)),
-    metadata = list(), ...) standardGeneric("cBSData"),
+setGeneric("cBSData", function(methReads, totalReads, rowRanges, colData =
+                                DataFrame(row.names = colnames(methReads)),
+                            metadata = list(), ...) standardGeneric("cBSData"),
     signature = c("methReads", "totalReads", "rowRanges"))
 
 #' @title methReads method
@@ -38,7 +38,7 @@ setGeneric("cBSData", function(methReads, totalReads, rowRanges,
 #' @inheritParams params
 #' @return A matrix
 #' @examples
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
@@ -68,7 +68,7 @@ setGeneric("methReads<-", function(object,value) standardGeneric("methReads<-"))
 #' @inheritParams params
 #' @return A matrix
 #' @examples
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
@@ -110,7 +110,7 @@ setGeneric("totalReads<-", function(object,value)
 #' @return A \code{\link{BSDMCs-class}}
 #' @examples
 #' set.seed(1980)
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
@@ -123,8 +123,8 @@ setGeneric("totalReads<-", function(object,value)
 #' OBJ2
 #' @exportMethod cBSDMCs
 setGeneric("cBSDMCs", function(methReads, totalReads, methLevels, methStates,
-    rowRanges, colData = DataFrame(row.names = colnames(methReads)),
-    metadata = list(), ...) standardGeneric("cBSDMCs"), signature =
+        rowRanges, colData = DataFrame(row.names = colnames(methReads)),
+        metadata = list(), ...) standardGeneric("cBSDMCs"), signature =
         c("methReads", "totalReads", "methLevels", "methStates", "rowRanges"))
 
 #' @title methReads method
@@ -174,7 +174,7 @@ setGeneric("totalReads<-", function(object, value)
 #' @return A matrix
 #' @examples
 #' set.seed(1980)
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
@@ -209,7 +209,7 @@ setGeneric("methLevels<-", function(object, value)
 #' @return A matrix
 #' @examples
 #' set.seed(1980)
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
@@ -245,7 +245,7 @@ setGeneric("methStates<-", function(object, value)
 #' @return A \code{\link{BSData-class}} or \code{\link{BSDMCs-class}}
 #' @examples
 #' set.seed(1980)
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc*2, 0, nr)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc*2)),nr,nc*2)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
@@ -308,7 +308,7 @@ setGeneric("writeBED", function(object, name, file) standardGeneric("writeBED"))
 #' @importFrom stats dbinom
 #' @examples
 #' set.seed(1980)
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
@@ -340,7 +340,7 @@ setGeneric("methHMEM", function(object, MaxK, MaxEmiter, epsEM, useweight,
 #' @importFrom utils combn
 #' @examples
 #' set.seed(1980)
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
@@ -372,7 +372,7 @@ setGeneric("methHMMCMC", function(object, useweight, nburn, nthin, nsamp,
 #' @importFrom stats pf
 #' @examples
 #' set.seed(1980)
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
@@ -399,7 +399,7 @@ setGeneric("findDMCs", function(object, formula, FDRthreshold, Methylthreshold,
 #' @import graphics
 #' @examples
 #' set.seed(1980)
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
@@ -425,7 +425,7 @@ setGeneric("qqDMCs", function(object, ...) standardGeneric("qqDMCs"))
 #' @importFrom calibrate textxy
 #' @examples
 #' set.seed(1980)
-#' nr <- 200; nc <- 8
+#' nr <- 150; nc <- 8
 #' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')

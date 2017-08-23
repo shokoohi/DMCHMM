@@ -6,8 +6,8 @@
 #' methylated reads spanning a CpG-site. The rows represent the CpG sites in
 #' \code{rowRanges} and the columns represent the samples in \code{colData}.
 #' @param totalReads The matrix \code{totalReads} contains the number of reads
-#'  spanning a CpG-site. The rows represent the CpG sites in \code{rowRanges}
-#'  and the columns represent the samples in \code{colData}.
+#' spanning a CpG-site. The rows represent the CpG sites in \code{rowRanges}
+#' and the columns represent the samples in \code{colData}.
 #' @param methLevels The matrix \code{methLevels} contains the predicted
 #' methylation level spanning a CpG-site using Hidden Markov model. The rows
 #' represent the CpG sites in \code{rowRanges} and the columns represent the
@@ -49,17 +49,17 @@
 #' @param ... other possible parameters
 #' @param col A character vector indicating which colors to alternate.
 #' @param chrlabs A character vector equal to the number of chromosomes
-#'   specifying the chromosome labels (e.g., \code{c(1:22, "X", "Y", "MT")}).
+#' specifying the chromosome labels (e.g., \code{c(1:22, "X", "Y", "MT")}).
 #' @param suggestiveline Where to draw a "suggestive" line. Default
-#'   -log10(1e-5). Set to FALSE to disable.
+#' -log10(1e-5). Set to FALSE to disable.
 #' @param genomewideline Where to draw a "genome-wide sigificant" line. Default
-#'   -log10(5e-8). Set to FALSE to disable.
+#' -log10(5e-8). Set to FALSE to disable.
 #' @param highlight A character vector of SNPs in your dataset to highlight.
-#'   These SNPs should all be in your dataset.
+#' These SNPs should all be in your dataset.
 #' @param logp If TRUE, the -log10 of the p-value is plotted. It isn't very
-#'   useful to plot raw p-values, but plotting the raw value could be useful for
-#'   other genome-wide plots, for example, peak heights, bayes factors, test
-#'   statistics, other "scores," etc.
+#' useful to plot raw p-values, but plotting the raw value could be useful for
+#' other genome-wide plots, for example, peak heights, bayes factors, test
+#' statistics, other "scores," etc.
 #' @param annotatePval If set, SNPs below this p-value will be annotated on the
 #' plot.
 #' @param annotateTop If TRUE, only annotates the top hit on each chromosome
@@ -69,7 +69,7 @@ NULL
 
 #' @title BSData object
 #' @description The \code{BSData} object is an S4 class that represents BS-Seq
-#'  Data.
+#' Data.
 #' @author Farhad Shokoohi <shokoohi@icloud.com>
 #' @name BSData-class
 #' @import methods
@@ -81,8 +81,8 @@ NULL
 #' methylated reads spanning a CpG-site. The rows represent the CpG sites in
 #' \code{rowRanges} and the columns represent the samples in \code{colData}.
 #' @param totalReads The matrix \code{totalReads} contains the number of reads
-#'  spanning a CpG-site. The rows represent the CpG sites in \code{rowRanges}
-#'  and the columns represent the samples in \code{colData}.
+#' spanning a CpG-site. The rows represent the CpG sites in \code{rowRanges}
+#' and the columns represent the samples in \code{colData}.
 #' @seealso \code{\link{SummarizedExperiment}} objects.
 #' @docType class
 #' @keywords object
@@ -130,8 +130,8 @@ setValidity("BSData", function(object){
 #' methylated reads spanning a CpG-site. The rows represent the CpG sites in
 #' \code{rowRanges} and the columns represent the samples in \code{colData}.
 #' @param totalReads The matrix \code{totalReads} contains the number of reads
-#'  spanning a CpG-site. The rows represent the CpG sites in \code{rowRanges}
-#'  and the columns represent the samples in \code{colData}.
+#' spanning a CpG-site. The rows represent the CpG sites in \code{rowRanges}
+#' and the columns represent the samples in \code{colData}.
 #' @param methLevels The matrix \code{methLevels} contains the predicted
 #' methylation level spanning a CpG-site using Hidden Markov model. The rows
 #' represent the CpG sites in \code{rowRanges} and the columns represent the

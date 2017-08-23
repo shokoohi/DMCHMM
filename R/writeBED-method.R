@@ -92,7 +92,7 @@ setMethod("writeBED", signature = c(object = "BSData", name = "missing",
 setMethod("writeBED", signature = c(object = "BSData", name = "missing",
     file = "missing"), function(object) {
     .writeBED_BSData(object, name = colnames(object),
-                     file = paste(colnames(object), ".bed", sep = ""))
+                    file = paste(colnames(object), ".bed", sep = ""))
 })
 
 #' @rdname writeBED-method
@@ -120,6 +120,6 @@ setMethod("writeBED", signature = c(object = "BSDMCs", name = "missing",
 setMethod("writeBED", signature = c(object = "BSDMCs", name = "missing",
     file = "missing"), function(object) {
     .writeBED_BSDMCs(object, name = colnames(object),
-                     file = paste(colnames(object), ".bed", sep = ""))
+                    file = paste(colnames(object), ".bed", sep = ""))
 })
 

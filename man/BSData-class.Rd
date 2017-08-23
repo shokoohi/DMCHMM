@@ -19,7 +19,7 @@ A \code{\link{BSData-class}} object
 }
 \description{
 The \code{BSData} object is an S4 class that represents BS-Seq
- Data.
+Data.
 }
 \section{Slots}{
 

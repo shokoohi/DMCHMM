@@ -106,8 +106,9 @@
                 if ("(Intercept)" %in% names(lmodel$coefficients)) {
                     baseL <- lmodel$coefficients[1]
                 } else {
-                 baseL <- lmodel$coefficients[c(grep(names(object.df.factor)[1],
-                    names(lmodel$coefficients), value = TRUE))][1]
+                    baseL <- lmodel$coefficients[c(grep(names(
+                        object.df.factor)[1],
+                        names(lmodel$coefficients), value = TRUE))][1]
                 }
 
                 ITR1 = 0
@@ -118,7 +119,7 @@
                             ITR1 == 0) {
                             lc <- lmodel$coefficients[c("(Intercept)",
                                 grep(g, names(lmodel$coefficients),
-                                     value = TRUE))]
+                                    value = TRUE))]
                             lc[-1] = lc[-1] + baseL
                         } else if (!("(Intercept)" %in%
                                 names(lmodel$coefficients)) & ITR1 == 0) {
@@ -136,7 +137,7 @@
                         temp1[d > Methylthreshold] = "hyper"
                         temp1[d < Methylthreshold] = "hypo"
                         temp1[d >= (-Methylthreshold) &
-                                  d <= Methylthreshold] = "equal"
+                                d <= Methylthreshold] = "equal"
                         methDir <- c(methDir, temp1)
                         bb <- NULL
                         bb$g <- "Tukey"
@@ -310,15 +311,14 @@
             nGroup = length(levels(object.df.factor[,
                 i]))
             if (nGroup > 1) {
-                NCOL = NCOL + ncol(combn(1:nGroup,
-                  2))
-                np <- paste(combn(levels(object.df.factor[,
-                  i]), 2)[1, ], combn(levels(object.df.factor[,
-                  i]), 2)[2, ], sep = "vs")
+                NCOL = NCOL + ncol(combn(1:nGroup, 2))
+                np <- paste(combn(levels(object.df.factor[, i]), 2)[1, ],
+                            combn(levels(object.df.factor[, i]), 2)[2, ],
+                            sep = "vs")
                 namesPairDMC <- c(namesPairDMC, paste("DMCs",
-                  names(object.df.factor[i]), np, sep = ""))
+                    names(object.df.factor[i]), np, sep = ""))
                 namesPairDIR <- c(namesPairDIR, paste("methDir",
-                  names(object.df.factor[i]), np, sep = ""))
+                    names(object.df.factor[i]), np, sep = ""))
             }
         }
     }

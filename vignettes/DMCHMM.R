@@ -9,7 +9,7 @@ colData(OBJ) <- cdOBJ
 OBJ
 
 ## ---- eval=TRUE, message=FALSE-------------------------------------------
-nr <- 200; nc <- 8
+nr <- 150; nc <- 8
 metht <- matrix(as.integer(runif(nr * nc, 0, 20)), nr)
 methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")

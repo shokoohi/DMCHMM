@@ -105,8 +105,7 @@
             if (i == 1) {
                 d[d$index == i, ]$pos = d[d$index == i, ]$BP
             } else {
-                lastbase = lastbase + tail(subset(d, index == i - 1)$BP,
-                  1)
+                lastbase = lastbase + tail(subset(d, index == i - 1)$BP, 1)
                 d[d$index == i, ]$pos = d[d$index == i, ]$BP + lastbase
             }
             # Old way: assumes SNPs evenly distributed ticks=c(ticks,
@@ -137,7 +136,7 @@
     # And call the plot function passing NA, your ... arguments, and the
     # default arguments that were not defined in the ... arguments.
     do.call("plot", c(NA, dotargs,
-                      def_args[!names(def_args) %in% names(dotargs)]))
+                        def_args[!names(def_args) %in% names(dotargs)]))
 
     # If manually specifying chromosome labels, ensure a character vector
     # and number of labels matches number chrs.
@@ -214,7 +213,7 @@
             })
             topSNPs <- do.call(rbind, topSNPs)
             textxy(topSNPs$pos, -log10(topSNPs$P), offset = 0.625,
-                   labs = topSNPs$SNP, cex = 0.5, ...)
+                    labs = topSNPs$SNP, cex = 0.5, ...)
         }
     }
     par(xpd = FALSE)
