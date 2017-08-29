@@ -302,7 +302,6 @@ setGeneric("writeBED", function(object, name, file) standardGeneric("writeBED"))
 #' @inheritParams params
 #' @return \code{\link{BSDMCs-class}} object
 #' @import BiocParallel
-#' @import parallel
 #' @import GenomicRanges
 #' @import S4Vectors
 #' @importFrom stats dbinom
@@ -329,7 +328,6 @@ setGeneric("methHMEM", function(object, MaxK, MaxEmiter, epsEM, useweight,
 #' @inheritParams params
 #' @return \code{\link{BSDMCs-class}} object
 #' @import BiocParallel
-#' @import parallel
 #' @import GenomicRanges
 #' @import S4Vectors
 #' @importFrom stats dbinom
@@ -361,7 +359,6 @@ setGeneric("methHMMCMC", function(object, useweight, nburn, nthin, nsamp,
 #' @inheritParams params
 #' @return \code{\link{BSDMCs-class}} object
 #' @import BiocParallel
-#' @import parallel
 #' @import rtracklayer
 #' @import GenomicRanges
 #' @import fdrtool

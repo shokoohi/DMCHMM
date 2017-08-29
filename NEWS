@@ -1,8 +1,10 @@
 ------------------------
-CHANGES IN VERSION 0.99.10 - 0.99.12
+CHANGES IN VERSION 0.99.10 - 0.99.13
 ----------------------
 CHANGES SINCE LAST TIME
     o Several issues are fixed.
+    o Some modification are done to expedise the process.
+    o Instead of the parallel package, the BioParallel package is used.
 
 ------------------------
 CHANGES IN VERSION 0.99.9

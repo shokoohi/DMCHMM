@@ -1,5 +1,4 @@
 .marglike <- function(beta.est, Pm.est, Kv, Yv, nv, useweight) {
-    # Kv<-1 xv<-rep(0,K+(K+2)*(K+1)) Yv<-Y.tot nv<-n.tot
     npos = length(Yv)
 
     pX.filter = array(0, c(npos, Kv + 2))
@@ -18,8 +17,6 @@
 
     Pm <- Pm.est
 
-    # nw <- log(nv+2)/log(sum(nv+2)) nw <- log(nv+2) nw <-
-    # log(nv+2)/sum(log(nv+2)) nw <- rep(1,length(Yv))
     if (useweight) {
         nw <- log(nv + 2)
     } else {
@@ -32,57 +29,36 @@
     }
 
     pX.predict[1, ] <- Ptmp[1, ]  #  Pi
-    # pX.predict[1,] <-c(0,pv) # prediction
     pmarg <- sum(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])
-    # p(y_0)=\sum_k p(y_1,X_0=k) marginal
     pX.filter[1, ] <- c(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])/pmarg
     # filtering
 
     pX.predict[1, ] <- t(t(Pm) %*% pX.filter[1, ])
-    # p(X_{t}=k|y_1^{t-1}?) prediction
+    # prediction
     pmarg <- sum(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])
-    # p(y_t)=\sum_k p(y_t,X_{t-1}=k) marginal
+    # marginal
     pX.filter[1, ] <- c(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])/pmarg
-    # filtering Xfilter[1]<-which.max(pX.filter[1,])
 
     mlike <- 0
     mlike <- mlike + nw[1] * log(pmarg)
 
     for (i in 2:npos) {
         pX.predict[i, ] <- t(t(Pm) %*% pX.filter[i - 1, ])
-        # p(X_{t}=k|y_1^{t-1}?)  prediction
         pmarg <- sum(dbinom(Yv[i], nv[i], pv) * pX.predict[i, ])
-        # p(y_t)=\sum_k p(y_t,X_{t-1}=k) marginal
         pX.filter[i, ] <- c(dbinom(Yv[i], nv[i], pv) * pX.predict[i, ])/pmarg
-        # filtering Xfilter[i]<-which.max(pX.filter[i,])
         mlike <- mlike + nw[i] * log(pmarg)
     }
-    # pen <- - sum(log( abs(pv[-c(1)]-pv[-c(Kv+2)]))) mlike<- mlike - lamb
-    # * pen
     return(mlike)
 }
 
 .marglike.M <- function(X.estimate, Yv, nv, useweight) {
-    # Kv<-1 xv<-rep(0,K+(K+2)*(K+1)) Yv<-Y.tot nv<-n.tot
     npos = length(Yv)
-
-    # nw <- log(nv+2)/log(sum(nv+2)) nw <- log(nv+2) nw <-
-    # log(nv+2)/sum(log(nv+2)) nw <- rep(1,length(Yv))
     if (useweight) {
         nw <- log(nv + 2)
     } else {
         nw <- rep(1, length(Yv))
     }
-
     mlike <- sum(nw * dbinom(Yv, nv, X.estimate, log=TRUE), na.rm = TRUE)
-
-    #mlike = 0
-    #for (i in 1:npos) {
-    #    mlike = mlike + nw[i] * ifelse(is.infinite(dbinom(Yv[i], nv[i],
-    #        X.estimate[i], log = TRUE)), 0, dbinom(Yv[i], nv[i], X.estimate[i],
-    #        log = TRUE))
-    #}
-
     return(mlike)
 }
 
@@ -96,8 +72,6 @@
     Prob.U.vec <- matrix(0, nrow = length(Yv), ncol = Kv + 2)
     x.samp <- matrix(0, nrow = nsamp, ncol = length(Yv))
     index <- 1:length(Yv)
-    # nw <- log(nv+2)/log(sum(nv+2)) nw <- log(nv+2)/sum(log(nv+2)) nw <-
-    # rep(1,length(Yv))
     n = length(Yv)
     if (useweight) {
         nw <- log(nv + 2)
@@ -112,10 +86,6 @@
         if (Itr == nburn) {
             Prob.U.vec <- Prob.U.vec * 0
         }
-
-        # dtmp1 <- nv[1]*dbinom(Yv[1],nv[1],old.prob,log=T) dtmp3 <-
-        # nv[1]*log(old.P.U[,old.Uvec[2]+1]) dtmp3 <-
-        # log(old.P.U[,old.Uvec[2]+1])
         dtmp1 <- dbinom(Yv[1], nv[1], old.prob, log = TRUE)
         dtmp3 <- log(old.P.U[, old.Uvec[2] + 1])
 
@@ -126,11 +96,6 @@
         Prob.U.vec[1, ] <- Prob.U.vec[1, ] + ptmp/sum(ptmp)
 
         for (i in 2:(n - 1)) {
-            # Sample the Methylation state
-            # dtmp1<-nv[i]*dbinom(Yv[i],nv[i],old.prob,log=TRUE)
-            # dtmp3<-nv[i]*log(old.P.U[old.Uvec[i-1]+1,]*
-            # old.P.U[,old.Uvec[i+1]+1])
-            # dtmp3<-log(old.P.U[old.Uvec[i-1]+1,]*old.P.U[,old.Uvec[i+1]+1])
             dtmp1 <- dbinom(Yv[i], nv[i], old.prob, log = TRUE)
             dtmp3 <- log(old.P.U[old.Uvec[i - 1] + 1, ] * old.P.U[, old.Uvec[i +
                 1] + 1])
@@ -139,10 +104,6 @@
             old.Uvec[i] <- sample(0:(Kv + 1), size = 1, prob = ptmp)
             Prob.U.vec[i, ] <- Prob.U.vec[i, ] + ptmp/sum(ptmp)
         }
-
-        # dtmp1<-nv[n]*dbinom(Yv[n],nv[n],old.prob,log=TRUE)
-        # dtmp3<-nv[n]*log(old.P.U[,old.Uvec[n-1]+1])
-        # dtmp3<-log(old.P.U[,old.Uvec[n-1]+1])
         dtmp1 <- dbinom(Yv[n], nv[n], old.prob, log = TRUE)
         dtmp3 <- log(old.P.U[, old.Uvec[n - 1] + 1])
 
@@ -172,9 +133,6 @@
             old.prob[k + 1] <- qbeta(FL + u * (FU - FL), ytot + 1/2, ntot -
                 ytot + 1/2)
         }
-
-        # print(noquote(c(sprintf('%5.0f',Itr), sprintf('%5.5f',
-        # old.prob[2:(Kv+1)]))))
         if (Itr > nburn & Itr%%nthin == 0) {
             ico <- ico + 1
             p.samp[ico, ] <- old.prob
@@ -187,7 +145,6 @@
 
     return(list(p.samp = p.samp, P.U.samp = P.U.samp, Prob.U.vec = Prob.U.vec,
         x.samp = x.samp, X.estimate = X.estimate))
-
 }
 
 .runMCMC.M <- function(Y.tot, n.tot, K, EM.old.prob, EM.old.Uvec, EM.old.P.U,
@@ -251,11 +208,12 @@
     nsamp = as.integer(nsamp)
 
     if (missing(mc.cores)) {
-        mc.cores = max(1, detectCores() - 1)
-    } else if (!is.numeric(mc.cores) | mc.cores <= 0 | mc.cores > detectCores())
+        mc.cores = max(1, multicoreWorkers())
+    } else if (!is.numeric(mc.cores) | mc.cores <= 0 |
+                mc.cores > multicoreWorkers())
         {
         stop("An integer value greater than 0 and less than or equal to
-    detectCores() must be provided for mc.cores")
+    multicoreWorkers() must be provided for mc.cores")
     }
     mc.cores = as.integer(mc.cores)
 
@@ -278,22 +236,6 @@
     }
     totres2 <- bplapply(seq_len(nSam), .mfun2, BPPARAM = optbp)
 
-    # j = 1
-    # cl <- makeCluster(mc.cores)
-    # registerDoSNOW(cl)
-    # pb <- txtProgressBar(max = nSam, style = 3)
-    # progress <- function(n) setTxtProgressBar(pb, n)
-    # opts <- list(progress = progress)
-    # totres2 <- foreach(j = 1:nSam, .options.snow = opts) %dopar% {
-    #     EstHMMSamMCMC.EM.W <- .runMCMC.M(c(assays(object)$methReads[, j]),
-    #         c(assays(object)$totalReads[, j]), c(metadata(object)$K[j]),
-    #         metadata(object)$Beta[[j]], c(assays(object)$methStates[, j]),
-    #         metadata(object)$Pm[[j]], nburn, nthin, nsamp, useweight)
-    #     return(EstHMMSamMCMC.EM.W)
-    # }
-    # close(pb)
-    # stopCluster(cl)
-
     Khat <- vapply(totres2, function(elt) elt$K, numeric(1))
     Betahat <- lapply(totres2, function(elt) elt$p.ests)
     Phat <- lapply(totres2, function(elt) elt$p.U.ests)
@@ -302,20 +244,6 @@
     methStates.new <- vapply(totres2, function(elt) apply(elt$xMCMC$Prob.U.vec,
                                 1, which.max) - 1, numeric(nPos))
     storage.mode(methStates.new) <- "integer"
-
-    #Khat = c()
-    #Betahat = list()
-    #Phat = list()
-    #methStates.new = methLevels.new = matrix(0, nPos, nSam)
-
-    #for (i in 1:nSam) {
-    #    Khat[i] = totres2[[i]]$K
-    #    Betahat[[i]] = totres2[[i]]$p.ests
-    #    Phat[[i]] = totres2[[i]]$p.U.ests
-    #    methLevels.new[, i] = c(totres2[[i]]$X.estimate)
-    #    methStates.new[, i] = as.integer(c(apply(totres2[[i]]$xMCMC$Prob.U.vec,
-    #        1, which.max) - 1))
-    #}
 
     colnames(methLevels.new) <- colnames(object)
     rownames(methLevels.new) <- NULL

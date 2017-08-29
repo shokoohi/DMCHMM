@@ -48,7 +48,6 @@
     } else if (!is.logical(annotateTop)) {
         stop("Provide a logical value for annotateTop!")
     }
-
     # Create a new data.frame with columns called CHR, BP, and P.
     d = data.frame(CHR = as.numeric(gsub("[[:alpha:]]", "",
                 as.data.frame(rowRanges(object))$seqnames)),
@@ -56,7 +55,6 @@
                 P = metadata(object)$DMCHMM$pvalues,
                 NameBP = as.data.frame(rowRanges(object))$start -
                     min(as.data.frame(rowRanges(object))$start) + 1)
-
     # If the input data frame has a SNP column, add it to the new data
     # frame you're creating.
     if (!is.null(metadata(object)$DMCHMM$snp))
@@ -68,7 +66,6 @@
     d <- subset(d, (is.numeric(CHR) & is.numeric(BP) & is.numeric(P) &
         is.numeric(NameBP)))
     d <- d[order(d$CHR, d$BP), ]
-    # d$logp <- ifelse(logp, yes=-log10(d$P), no=d$P)
     if (logp) {
         d$logp <- -log10(d$P)
     } else {
@@ -108,9 +105,9 @@
                 lastbase = lastbase + tail(subset(d, index == i - 1)$BP, 1)
                 d[d$index == i, ]$pos = d[d$index == i, ]$BP + lastbase
             }
-            # Old way: assumes SNPs evenly distributed ticks=c(ticks,
+        # Old way: assumes SNPs evenly distributed ticks=c(ticks,
         # d[d$index==i,]$pos[floor(length(d[d$index==i, ]$pos)/2)+1]) New way:
-            # doesn't make that assumption
+        # doesn't make that assumption
             ticks = c(ticks, (min(d[d$index == i, ]$pos) + max(d[d$index ==
                 i, ]$pos))/2 + 1)
         }
@@ -124,9 +121,6 @@
     xmax = ceiling(max(d$pos) * 1.03)
     xmin = floor(max(d$pos) * -0.03)
 
-    # The new way to initialize the plot.  See
-    # http://stackoverflow.com/q/23922130/654296 First, define your default
-    # arguments
     def_args <- list(xaxt = "n", bty = "n", xaxs = "i", yaxs = "i", las = 1,
         pch = 20, xlim = c(xmin, xmax), ylim = c(0, ceiling(max(d$logp))),
         xlab = xlabel, ylab = expression(-log[10](italic(p))))
@@ -218,7 +212,6 @@
     }
     par(xpd = FALSE)
 }
-
 
 #' @rdname manhattanDMCs-method
 #' @aliases manhattanDMCs-method manhattanDMCs

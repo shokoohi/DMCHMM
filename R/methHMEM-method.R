@@ -4,7 +4,6 @@
     } else {
         nw <- rep(1, length(Yv))
     }
-
     nPos = length(Yv)
 
     pX.filter = array(0, c(nPos, Kv + 2))
@@ -43,12 +42,6 @@
         return(x/sum(x))
     }))
 
-    # Pi0 <-
-    # exp(c(xv[((Kv+(Kv+2)*(Kv+1)+(1))):(Kv+(Kv+2)*(Kv+1)+(Kv+1))],0)) Pi0
-    # <- Pi0 / sum(Pi0)
-
-    # folowing lines will be activated if we are seeking an alternative
-    # estimator for initial probabilities.
     Pi0 <- Pm
     for (i in 1:100) Pi0 <- Pi0 %*% Pm
     Pi0 <- Pi0[1, ]
@@ -59,36 +52,24 @@
     while ((diffpar > epsEM) & (niter < MaxEmiter)) {
         # E-step
         pX.predict[1, ] <- t(t(Pm) %*% Pi0)
-        # p(X_{t}=k|y_1^{t-1}?)  prediction
+        # prediction
         pmarg <- sum(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])
-        # p(y_t)=\sum_k p(y_t,X_{t-1}=k) marginal
+        # marginal
         pX.filter[1, ] <- c(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])/pmarg
-        # filtering Xfilter[1]<-which.max(pX.filter[1,])
 
         for (i in 2:nPos) {
             pX.predict[i, ] <- t(t(Pm) %*% pX.filter[i - 1, ])
-            # p(X_{t}=k|y_1^{t-1}?)  prediction
             pmarg <- sum(dbinom(Yv[i], nv[i], pv) * pX.predict[i, ])
             pmarg <- ifelse(pmarg < 1e-200, 1e-200, pmarg)
-            # p(y_t)=\sum_k p(y_t,X_{t-1}=k) marginal
             pX.filter[i, ] <- c(dbinom(Yv[i], nv[i], pv) * pX.predict[i,
                 ])/pmarg
-            # filtering Xfilter[i]<-which.max(pX.filter[i,]) mlike<-
-            # mlike+nw[i]*log(pmarg)
         }
-        # pX.smooth[is.na(pX.smooth)]=1/(Kv+2)
         pX.smooth[nPos, ] <- pX.filter[nPos, ]
-        # Xsmooth[nPos]<-which.max(pX.smooth[nPos,])
         for (i in (nPos - 1):1) {
-            # if(is.na(sum(pX.smooth[i,]))) stop(print(i))
             hh <- (pX.smooth[i + 1, ]/pX.predict[i + 1, ])
             hh[is.na(hh)] <- 0
             pX.smooth[i, ] <- pX.filter[i, ] * (Pm %*% hh)
-            # Xsmooth[i]<-which.max(pX.smooth[i,])
         }
-        # pen <- - sum(log( abs(pv[-c(1)]-pv[-c(Kv+2)]))) mlike<- mlike - lamb
-        # * pen
-
         W01k.Estep = pX.smooth[1, ]
         Wik.Estep = pX.smooth
 
@@ -101,18 +82,10 @@
                 2, byrow = TRUE)
         }
         Wijk.Estep[is.na(Wijk.Estep)] <- 0
-        # new.Pi0 = W01k.Estep / sum(W01k.Estep)
         new.pv = ((nw * Yv) %*% Wik.Estep)/((nw * nv) %*% Wik.Estep)
 
         new.Pm <- apply(Wijk.Estep, 2:3, function(x) sum(x)) /
             apply(Wijk.Estep, 3, function(x) sum(x))
-
-        #new.Pm <- matrix(0, Kv + 2, Kv + 2)
-        #for (j in 1:(Kv + 2)) {
-        #    for (k in 1:(Kv + 2)) {
-        #        new.Pm[j, k] = sum(Wijk.Estep[, j, k])/sum(Wijk.Estep[, j, ])
-        #    }
-        #}
 
         # folowing lines will be activated if we are seeking an alternative
         # estimator for initial probabilities.
@@ -124,7 +97,6 @@
         diffpar = diffpar + sum((Pi0 - new.Pi0)^2)
         diffpar = diffpar + sum((Pm - new.Pm)^2)
         diffpar = diffpar + sum((pv - new.pv)^2)
-        # if(is.na(diffpar)) stop(paste(niter))
 
         niter = niter + 1
 
@@ -134,21 +106,16 @@
     }
 
     mlike <- 0
-    pX.predict[1, ] <- t(t(Pm) %*% Pi0)  # p(X_{t}=k|y_1^{t-1}?)  prediction
+    pX.predict[1, ] <- t(t(Pm) %*% Pi0)
     pmarg <- sum(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])
-    # p(y_t)=\sum_k p(y_t,X_{t-1}=k) marginal
     pX.filter[1, ] <- c(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])/pmarg
-    # filtering
     X.filter[1] <- which.max(pX.filter[1, ])
     mlike <- mlike + nw[1] * log(pmarg)
 
     for (i in 2:nPos) {
         pX.predict[i, ] <- t(t(Pm) %*% pX.filter[i - 1, ])
-        # p(X_{t}=k|y_1^{t-1}?)  prediction
         pmarg <- sum(dbinom(Yv[i], nv[i], pv) * pX.predict[i, ])
-        # p(y_t)=\sum_k p(y_t,X_{t-1}=k) marginal
         pX.filter[i, ] <- c(dbinom(Yv[i], nv[i], pv) * pX.predict[i, ])/pmarg
-        # filtering
         X.filter[i] <- which.max(pX.filter[i, ])
         mlike <- mlike + nw[i] * log(pmarg)
     }
@@ -165,13 +132,7 @@
     X.estimate[X.estimate > 1] = 1
     X.estimate[X.estimate < 0] = 0
 
-    # pen <- - sum(log( abs(pv[-c(1)]-pv[-c(Kv+2)])))
     mlike <- sum(nw * dbinom(Yv, nv, X.estimate, log=TRUE))
-
-    #  mlike = 0
-    #  for (i in 1:nPos) {
-    #   mlike = mlike + nw[i] * dbinom(Yv[i], nv[i], X.estimate[i], log = TRUE)
-    #  }
 
     return(list(mlike = mlike, beta = pv, Pm = Pm, Pi0 = Pi0,
                 X.smooth = X.smooth, X.filter = X.filter,
@@ -240,11 +201,12 @@
     useweight = as.logical(useweight)
 
     if (missing(mc.cores)) {
-        mc.cores = max(1, detectCores() - 1)
-    } else if (!is.numeric(mc.cores) | mc.cores <= 0 | mc.cores > detectCores())
+        mc.cores = max(1, multicoreWorkers())
+    } else if (!is.numeric(mc.cores) | mc.cores <= 0 |
+                mc.cores > multicoreWorkers())
         {
         stop("An integer value greater than 0 and less than or equal to
-    detectCores() must be provided for mc.cores")
+    multicoreWorkers() must be provided for mc.cores")
     }
     mc.cores = as.integer(mc.cores)
 
@@ -266,22 +228,6 @@
     }
     totres <- bplapply(seq_len(nSam), .mfun, BPPARAM = optbp)
 
-    # itr = 1
-    # cl <- makeCluster(mc.cores)
-    # registerDoSNOW(cl)
-    # pb <- txtProgressBar(max = nSam, style = 3)
-    # progress <- function(n) setTxtProgressBar(pb, n)
-    # opts <- list(progress = progress)
-    # totres <- foreach(itr = 1:nSam, .options.snow = opts,
-    #                   .packages = "SummarizedExperiment") %dopar% {
-    #     EstHMMSam <- .runEM.M(c(assays(object)$methReads[, itr]),
-    #         c(assays(object)$totalReads[, itr]), MaxK, MaxEmiter, epsEM,
-    #         useweight)
-    #     return(EstHMMSam)
-    # }
-    # close(pb)
-    # stopCluster(cl)
-
     Khat <- vapply(totres, function(elt) elt$K, numeric(1))
     Betahat <- lapply(totres, function(elt) elt$xEM$beta)
     Phat <- lapply(totres, function(elt) elt$xEM$Pm)
@@ -290,18 +236,6 @@
     methStates.new <- vapply(totres, function(elt) elt$xEM$X.smooth - 1,
                             numeric(nPos))
     storage.mode(methStates.new) <- "integer"
-
-    #Khat = c()
-    #Betahat = list()
-    #Phat = list()
-    #methStates.new = methLevels.new = matrix(0, nPos, nSam)
-    #for (i in 1:nSam) {
-    #    Khat[i] = totres[[i]]$K
-    #    Betahat[[i]] = totres[[i]]$xEM$beta
-    #    Phat[[i]] = totres[[i]]$xEM$Pm
-    #    methLevels.new[, i] = c(totres[[i]]$xEM$X.estimate)
-    #    methStates.new[, i] = as.integer(c(totres[[i]]$xEM$X.smooth - 1))
-    #}
 
     colnames(methLevels.new) <- colnames(object)
     rownames(methLevels.new) <- NULL
