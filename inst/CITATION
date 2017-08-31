@@ -2,14 +2,14 @@ citHeader("To cite DMCHMM in publications use:")
 
 citEntry(entry = "Manual",
          title = paste('DMCHMM: an R package to identify differentially
-         methylated CpG Sites using Hidden Markov Models, Version 0.99.13'),
+         methylated CpG Sites using Hidden Markov Models, Version 0.99.14'),
          author = c(person("Farhad", "Shokoohi")),
          year = '2017',
          url = 'http://bioconductor.org/packages/DMCHMM/',
          textVersion  =
            paste('Farhad Shokoohi (2017) DMCHMM: an R package to identify
            differentially methylated CpG Sites using Hidden Markov Models,
-           Version 0.99.13',
+           Version 0.99.14',
            'URL  http://bioconductor.org/packages/DMCHMM/', sep="")
 )
 

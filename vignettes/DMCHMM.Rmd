@@ -93,7 +93,7 @@ is a `BSDMCs-class` that can be either used to find DMCs or use MCMC algorithm
 to re-smooth the raw data. The process is as follows. 
 
 ```{r, eval=TRUE, message=FALSE}
-OBJ2 <- methHMEM(OBJ1, MaxK=2, mc.cores=2)
+OBJ2 <- methHMEM(OBJ1, MaxK=2)
 OBJ2
 ```
 
@@ -106,7 +106,7 @@ each sample and then we use `methHMCMC-method` to predict methylation levels.
 The procedure is as follows. 
 
 ```{r, eval=TRUE, message=FALSE}
-OBJ3 <- methHMMCMC(OBJ2, mc.cores=2)
+OBJ3 <- methHMMCMC(OBJ2)
 OBJ3
 ```
 
@@ -119,6 +119,6 @@ action is required. The following command identifys the DMCs. The results are
 stored in a `BSDMCs-class` and can be retrived by calling `metadata` command. 
 
 ```{r, eval=TRUE, message=FALSE}
-OBJ4 <- findDMCs(OBJ3, mc.cores=2)
+OBJ4 <- findDMCs(OBJ3)
 head(metadata(OBJ4)$DMCHMM)
 ```

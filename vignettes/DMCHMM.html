@@ -12,7 +12,7 @@
 
 <meta name="author" content="Farhad Shokoohi" />
 
-<meta name="date" content="2017-08-23" />
+<meta name="date" content="2017-08-31" />
 
 <title>DMCHMM: Differentially Methylated CpG using Hidden Markov Model</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">DMCHMM: Differentially Methylated CpG using Hidden Markov Model</h1>
 <h4 class="author"><em>Farhad Shokoohi</em></h4>
-<h4 class="date"><em>2017-08-23</em></h4>
+<h4 class="date"><em>2017-08-31</em></h4>
 
 
 
@@ -136,12 +136,20 @@ OBJ1</code></pre></div>
 <div id="predicting-methylation-levels-using-hmm-and-em-algorithm" class="section level2">
 <h2>Predicting methylation levels using HMM and EM algorithm</h2>
 <p>There are two approaches to smoothed the data before testing for DMCs. Either EM or MCMC can be used to predict methylation levels utilizing HMM. The <code>methHMEM-method</code> which is developed to predict methylation levels. The output is a <code>BSDMCs-class</code> that can be either used to find DMCs or use MCMC algorithm to re-smooth the raw data. The process is as follows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ2 &lt;-<span class="st"> </span><span class="kw">methHMEM</span>(OBJ1, <span class="dt">MaxK=</span><span class="dv">2</span>, <span class="dt">mc.cores=</span><span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ2 &lt;-<span class="st"> </span><span class="kw">methHMEM</span>(OBJ1, <span class="dt">MaxK=</span><span class="dv">2</span>)</code></pre></div>
 <pre><code>## 
   |                                                                       
   |                                                                 |   0%
   |                                                                       
+  |===========                                                      |  17%
+  |                                                                       
+  |======================                                           |  33%
+  |                                                                       
   |================================                                 |  50%
+  |                                                                       
+  |===========================================                      |  67%
+  |                                                                       
+  |======================================================           |  83%
   |                                                                       
   |=================================================================| 100%</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ2</code></pre></div>
@@ -157,12 +165,20 @@ OBJ1</code></pre></div>
 <div id="predicting-methylation-levels-using-hmm-and-mcmc-algorithm" class="section level2">
 <h2>Predicting methylation levels using HMM and MCMC algorithm</h2>
 <p>Although EM algorithm is a fast way to smooth the data but the results are not as good as the MCMC algorithm. The MCMC algorithm, however, is slow. In order to increase the speed, we first use <code>methHMEM-method</code> to find the HMM order for each sample and then we use <code>methHMCMC-method</code> to predict methylation levels. The procedure is as follows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ3 &lt;-<span class="st"> </span><span class="kw">methHMMCMC</span>(OBJ2, <span class="dt">mc.cores=</span><span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ3 &lt;-<span class="st"> </span><span class="kw">methHMMCMC</span>(OBJ2)</code></pre></div>
 <pre><code>## 
   |                                                                       
   |                                                                 |   0%
   |                                                                       
+  |===========                                                      |  17%
+  |                                                                       
+  |======================                                           |  33%
+  |                                                                       
   |================================                                 |  50%
+  |                                                                       
+  |===========================================                      |  67%
+  |                                                                       
+  |======================================================           |  83%
   |                                                                       
   |=================================================================| 100%</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ3</code></pre></div>
@@ -178,24 +194,32 @@ OBJ1</code></pre></div>
 <div id="identifying-dmcs" class="section level2">
 <h2>Identifying DMCs</h2>
 <p>Having smoothed the data using HMM, we run linear between predicted methylation levels and grouping covariate. In case other covariates exist, one can use the <code>formula</code> argument to specify a linear model. When there is no covariates no action is required. The following command identifys the DMCs. The results are stored in a <code>BSDMCs-class</code> and can be retrived by calling <code>metadata</code> command.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ4 &lt;-<span class="st"> </span><span class="kw">findDMCs</span>(OBJ3, <span class="dt">mc.cores=</span><span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ4 &lt;-<span class="st"> </span><span class="kw">findDMCs</span>(OBJ3)</code></pre></div>
 <pre><code>## 
   |                                                                       
   |                                                                 |   0%
   |                                                                       
+  |===========                                                      |  17%
+  |                                                                       
+  |======================                                           |  33%
+  |                                                                       
   |================================                                 |  50%
+  |                                                                       
+  |===========================================                      |  67%
+  |                                                                       
+  |======================================================           |  83%
   |                                                                       
   |=================================================================| 100%</code></pre>
 <pre><code>## Warning in fdrtool(x, statistic = &quot;pvalue&quot;, plot = FALSE, verbose = FALSE):
 ## There may be too few input test statistics for reliable FDR calculations!</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">metadata</span>(OBJ4)$DMCHMM)</code></pre></div>
-<pre><code>##   DMCs   pvalues   qvalues
-## 1    0 0.3372244 0.8598770
-## 2    0 0.2766729 0.8342920
-## 3    0 0.7201221 0.9290997
-## 4    0 0.6606596 0.9232084
-## 5    0 0.5000440 0.9009849
-## 6    0 0.8636367 0.9401767</code></pre>
+<pre><code>##   DMCs   pvalues   qvalues DMCsGroupG1vsG2 methDirGroupG1vsG2
+## 1    0 0.3305061 0.6196375               0               hypo
+## 2    0 0.1940082 0.6087899               0               hypo
+## 3    0 0.2589511 0.6153313               0              hyper
+## 4    0 0.1969610 0.6091770               0              hyper
+## 5    0 0.4212531 0.6260706               0              hyper
+## 6    0 0.3252089 0.6193820               0               hypo</code></pre>
 </div>
 
 

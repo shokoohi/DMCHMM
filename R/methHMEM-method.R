@@ -201,12 +201,10 @@
     useweight = as.logical(useweight)
 
     if (missing(mc.cores)) {
-        mc.cores = max(1, multicoreWorkers())
-    } else if (!is.numeric(mc.cores) | mc.cores <= 0 |
-                mc.cores > multicoreWorkers())
+        mc.cores = multicoreWorkers()
+    } else if (!is.numeric(mc.cores) | mc.cores <= 0)
         {
-        stop("An integer value greater than 0 and less than or equal to
-    multicoreWorkers() must be provided for mc.cores")
+        stop("An integer value greater than 0 must be provided for mc.cores")
     }
     mc.cores = as.integer(mc.cores)
 

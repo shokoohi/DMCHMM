@@ -19,14 +19,14 @@ OBJ1 <- cBSData(rowRanges=r1,methReads=methc,totalReads=metht,colData=cd1)
 OBJ1
 
 ## ---- eval=TRUE, message=FALSE-------------------------------------------
-OBJ2 <- methHMEM(OBJ1, MaxK=2, mc.cores=2)
+OBJ2 <- methHMEM(OBJ1, MaxK=2)
 OBJ2
 
 ## ---- eval=TRUE, message=FALSE-------------------------------------------
-OBJ3 <- methHMMCMC(OBJ2, mc.cores=2)
+OBJ3 <- methHMMCMC(OBJ2)
 OBJ3
 
 ## ---- eval=TRUE, message=FALSE-------------------------------------------
-OBJ4 <- findDMCs(OBJ3, mc.cores=2)
+OBJ4 <- findDMCs(OBJ3)
 head(metadata(OBJ4)$DMCHMM)
 
