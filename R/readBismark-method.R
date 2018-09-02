@@ -33,7 +33,7 @@
         }
     }
     mcols(fData) <- NULL
-    names(fData) <- as.character(1:length(fData))
+    names(fData) <- as.character(seq_len(length(fData)))
 
     tReads <- matrix(integer(length = length(fData) * length(methData)),
         nrow = length(fData))

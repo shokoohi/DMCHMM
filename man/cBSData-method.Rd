@@ -4,7 +4,6 @@
 \name{cBSData-method}
 \alias{cBSData-method}
 \alias{cBSData,matrix,matrix,GRanges-method}
-\alias{cBSData-method}
 \alias{cBSData}
 \title{cBSData method}
 \usage{
@@ -12,8 +11,8 @@ cBSData(methReads, totalReads, rowRanges, colData = DataFrame(row.names =
   colnames(methReads)), metadata = list(), ...)
 
 \S4method{cBSData}{matrix,matrix,GRanges}(methReads, totalReads, rowRanges,
-  colData = DataFrame(row.names = colnames(methReads)), metadata = list(),
-  ...)
+  colData = DataFrame(row.names = colnames(methReads)),
+  metadata = list(), ...)
 }
 \arguments{
 \item{methReads}{The matrix \code{methReads} contains the number of

@@ -4,29 +4,14 @@
 \name{writeBED-method}
 \alias{writeBED-method}
 \alias{writeBED,BSData,character,character-method}
-\alias{writeBED-method}
 \alias{writeBED}
 \alias{writeBED,BSData,character,missing-method}
-\alias{writeBED-method}
-\alias{writeBED}
 \alias{writeBED,BSData,missing,character-method}
-\alias{writeBED-method}
-\alias{writeBED}
 \alias{writeBED,BSData,missing,missing-method}
-\alias{writeBED-method}
-\alias{writeBED}
 \alias{writeBED,BSDMCs,character,character-method}
-\alias{writeBED-method}
-\alias{writeBED}
 \alias{writeBED,BSDMCs,character,missing-method}
-\alias{writeBED-method}
-\alias{writeBED}
 \alias{writeBED,BSDMCs,missing,character-method}
-\alias{writeBED-method}
-\alias{writeBED}
 \alias{writeBED,BSDMCs,missing,missing-method}
-\alias{writeBED-method}
-\alias{writeBED}
 \title{writeBED method}
 \usage{
 writeBED(object, name, file)

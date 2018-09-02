@@ -2,13 +2,16 @@
     npos = length(Yv)
 
     pX.filter = array(0, c(npos, Kv + 2))
-    dimnames(pX.filter) = list(index = 1:npos, states = c(1:(Kv + 2)))
+    dimnames(pX.filter) = list(index = seq_len(npos),
+                            states = c(seq_len(Kv + 2)))
 
     pX.smooth = array(0, c(npos, Kv + 2))
-    dimnames(pX.smooth) = list(index = 1:npos, states = c(1:(Kv + 2)))
+    dimnames(pX.smooth) = list(index = seq_len(npos),
+                            states = c(seq_len(Kv + 2)))
 
     pX.predict = array(0, c(npos, Kv + 2))
-    dimnames(pX.predict) = list(index = 1:npos, states = c(1:(Kv + 2)))
+    dimnames(pX.predict) = list(index = seq_len(npos),
+                            states = c(seq_len(Kv + 2)))
 
     Xfilter = rep(0, npos)
     Xsmooth = rep(0, npos)
@@ -24,7 +27,7 @@
     }
 
     Ptmp <- Pm
-    for (i in 1:100) {
+    for (i in seq_len(100)) {
         Ptmp <- Ptmp %*% Pm
     }
 
@@ -71,7 +74,7 @@
     P.U.samp <- array(0, c(nsamp, Kv + 2, Kv + 2))
     Prob.U.vec <- matrix(0, nrow = length(Yv), ncol = Kv + 2)
     x.samp <- matrix(0, nrow = nsamp, ncol = length(Yv))
-    index <- 1:length(Yv)
+    index <- seq_len(length(Yv))
     n = length(Yv)
     if (useweight) {
         nw <- log(nv + 2)
@@ -81,7 +84,7 @@
     wYv = nw * Yv
     wnv = nw * nv
 
-    for (Itr in 1:nits) {
+    for (Itr in seq_len(nits)) {
 
         if (Itr == nburn) {
             Prob.U.vec <- Prob.U.vec * 0
@@ -123,7 +126,7 @@
 
         # Now do the old.probs
 
-        for (k in 1:Kv) {
+        for (k in seq_len(Kv)) {
             kpos1 <- index[old.Uvec == k]
             ytot <- sum(wYv[kpos1])
             ntot <- sum(wnv[kpos1])
@@ -166,8 +169,7 @@
     X.estimate.var <- apply(xMCMC$X.estimate, 2, var)
 
     logMlik.M <- .marglike.M(X.estimate, Y.tot, n.tot, useweight)
-    BIC.M <- -2 * logMlik.M + log(length(Y.tot)) * (K + (K + 2) * (K +
-        1))
+    BIC.M <- -2 * logMlik.M + log(length(Y.tot)) * (K + (K + 2) * (K + 1))
 
     return(list(xMCMC = xMCMC, p.ests = p.ests, p.var.ests = p.var.ests,
         p.U.ests = p.U.ests, p.U.var.ests = p.U.var.ests, logMlik = logMlik,
@@ -177,7 +179,7 @@
 
 .methHMMCMC <- function(object, useweight, nburn, nthin, nsamp, mc.cores) {
 
-    if (missing(object) | class(object) != "BSDMCs")
+    if (missing(object) | is(object)[1] != "BSDMCs")
         stop("A BSDMCs object must be provided.")
 
     if (missing(useweight)) {
@@ -225,12 +227,19 @@
     nPos = nrow(object)
     nSam = length(colnames(object))
 
+    old.object = list(methReads = assays(object)$methReads,
+                    totalReads = assays(object)$totalReads,
+                    methStates = assays(object)$methStates,
+                    Beta = metadata(object)$Beta,
+                    K = metadata(object)$K,
+                    Pm = metadata(object)$Pm)
+
     optbp <- MulticoreParam(workers = mc.cores, progressbar = TRUE)
     .mfun2 <- function(j){
-        .runMCMC.M(c(assays(object)$methReads[, j]),
-                c(assays(object)$totalReads[, j]), c(metadata(object)$K[j]),
-                metadata(object)$Beta[[j]], c(assays(object)$methStates[,j]),
-                metadata(object)$Pm[[j]], nburn, nthin, nsamp, useweight)
+        .runMCMC.M(c(old.object$methReads[, j]),
+                c(old.object$totalReads[, j]), c(old.object$K[j]),
+                old.object$Beta[[j]], c(old.object$methStates[,j]),
+                old.object$Pm[[j]], nburn, nthin, nsamp, useweight)
     }
     totres2 <- bplapply(seq_len(nSam), .mfun2, BPPARAM = optbp)
 
@@ -239,18 +248,23 @@
     Phat <- lapply(totres2, function(elt) elt$p.U.ests)
     methLevels.new <- vapply(totres2, function(elt) elt$X.estimate,
                                 numeric(nPos))
+    methVars.new <- vapply(totres2, function(elt) elt$X.estimate.var,
+                            numeric(nPos))
     methStates.new <- vapply(totres2, function(elt) apply(elt$xMCMC$Prob.U.vec,
                                 1, which.max) - 1, numeric(nPos))
     storage.mode(methStates.new) <- "integer"
 
     colnames(methLevels.new) <- colnames(object)
     rownames(methLevels.new) <- NULL
+    colnames(methVars.new) <- colnames(object)
+    rownames(methVars.new) <- NULL
     colnames(methStates.new) <- colnames(object)
     rownames(methStates.new) <- NULL
 
     predictedMeth <- cBSDMCs(methReads = methReads(object),
                             totalReads = totalReads(object),
                             methLevels = methLevels.new,
+                            methVars = methVars.new,
                             methStates = apply(methStates.new, 2, as.integer),
                             rowRanges = rowRanges(object),
                             colData = colData(object))

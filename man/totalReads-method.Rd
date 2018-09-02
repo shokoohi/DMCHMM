@@ -3,21 +3,12 @@
 \docType{methods}
 \name{totalReads-method}
 \alias{totalReads-method}
-\alias{totalReads-method}
-\alias{totalReads-method}
-\alias{totalReads-method}
 \alias{totalReads,BSData-method}
-\alias{totalReads-method}
 \alias{totalReads}
 \alias{totalReads<-,BSData,matrix-method}
-\alias{totalReads-method}
 \alias{totalReads<-}
 \alias{totalReads,BSDMCs-method}
-\alias{totalReads-method}
-\alias{totalReads}
 \alias{totalReads<-,BSDMCs,matrix-method}
-\alias{totalReads-method}
-\alias{totalReads<-}
 \title{totalReads method}
 \usage{
 totalReads(object)

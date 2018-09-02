@@ -12,7 +12,7 @@
 
 <meta name="author" content="Farhad Shokoohi" />
 
-<meta name="date" content="2017-08-31" />
+<meta name="date" content="2018-01-24" />
 
 <title>DMCHMM: Differentially Methylated CpG using Hidden Markov Model</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">DMCHMM: Differentially Methylated CpG using Hidden Markov Model</h1>
 <h4 class="author"><em>Farhad Shokoohi</em></h4>
-<h4 class="date"><em>2017-08-31</em></h4>
+<h4 class="date"><em>2018-01-24</em></h4>
 
 
 
@@ -116,19 +116,19 @@ OBJ</code></pre></div>
 <div id="simulating-bs-seq-data" class="section level2">
 <h2>Simulating BS-Seq data</h2>
 <p>The above data set only include one sample for each cell type. We need more samples to be able to compare their methylations and find DMCs. For illustration we generate a sample of BS-Seq data as follows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nr &lt;-<span class="st"> </span><span class="dv">150</span>; nc &lt;-<span class="st"> </span><span class="dv">8</span>
-metht &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">as.integer</span>(<span class="kw">runif</span>(nr *<span class="st"> </span>nc, <span class="dv">0</span>, <span class="dv">20</span>)), nr)
-methc &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rbinom</span>(<span class="dt">n=</span>nr*nc,<span class="kw">c</span>(metht),<span class="dt">prob =</span> <span class="kw">runif</span>(nr*nc)),nr,nc)
-r1 &lt;-<span class="st"> </span><span class="kw">GRanges</span>(<span class="kw">rep</span>(<span class="st">&quot;chr1&quot;</span>, nr), <span class="kw">IRanges</span>(<span class="dv">1</span>:nr, <span class="dt">width=</span><span class="dv">1</span>), <span class="dt">strand=</span><span class="st">&quot;*&quot;</span>)
-<span class="kw">names</span>(r1) &lt;-<span class="st"> </span><span class="dv">1</span>:nr
-cd1 &lt;-<span class="st"> </span><span class="kw">DataFrame</span>(<span class="dt">Group=</span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;G1&quot;</span>,<span class="st">&quot;G2&quot;</span>),<span class="dt">each=</span>nc/<span class="dv">2</span>),<span class="dt">row.names=</span>LETTERS[<span class="dv">1</span>:nc])
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nr &lt;-<span class="st"> </span><span class="dv">900</span>; nc &lt;-<span class="st"> </span><span class="dv">8</span>
+metht &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">as.integer</span>(<span class="kw">runif</span>(nr <span class="op">*</span><span class="st"> </span>nc, <span class="dv">0</span>, <span class="dv">20</span>)), nr)
+methc &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rbinom</span>(<span class="dt">n=</span>nr<span class="op">*</span>nc,<span class="kw">c</span>(metht),<span class="dt">prob =</span> <span class="kw">runif</span>(nr<span class="op">*</span>nc)),nr,nc)
+r1 &lt;-<span class="st"> </span><span class="kw">GRanges</span>(<span class="kw">rep</span>(<span class="st">&quot;chr1&quot;</span>, nr), <span class="kw">IRanges</span>(<span class="dv">1</span><span class="op">:</span>nr, <span class="dt">width=</span><span class="dv">1</span>), <span class="dt">strand=</span><span class="st">&quot;*&quot;</span>)
+<span class="kw">names</span>(r1) &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>nr
+cd1 &lt;-<span class="st"> </span><span class="kw">DataFrame</span>(<span class="dt">Group=</span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;G1&quot;</span>,<span class="st">&quot;G2&quot;</span>),<span class="dt">each=</span>nc<span class="op">/</span><span class="dv">2</span>),<span class="dt">row.names=</span>LETTERS[<span class="dv">1</span><span class="op">:</span>nc])
 OBJ1 &lt;-<span class="st"> </span><span class="kw">cBSData</span>(<span class="dt">rowRanges=</span>r1,<span class="dt">methReads=</span>methc,<span class="dt">totalReads=</span>metht,<span class="dt">colData=</span>cd1)
 OBJ1</code></pre></div>
 <pre><code>## class: BSData 
-## dim: 150 8 
+## dim: 900 8 
 ## metadata(0):
 ## assays(2): totalReads methReads
-## rownames(150): 1 2 ... 149 150
+## rownames(900): 1 2 ... 899 900
 ## rowData names(0):
 ## colnames(8): A B ... G H
 ## colData names(1): Group</code></pre>
@@ -154,10 +154,10 @@ OBJ1</code></pre></div>
   |=================================================================| 100%</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ2</code></pre></div>
 <pre><code>## class: BSDMCs 
-## dim: 150 8 
+## dim: 900 8 
 ## metadata(3): K Beta Pm
-## assays(4): methReads totalReads methLevels methStates
-## rownames(150): 1 2 ... 149 150
+## assays(5): methReads totalReads methLevels methStates methVars
+## rownames(900): 1 2 ... 899 900
 ## rowData names(0):
 ## colnames(8): A B ... G H
 ## colData names(1): Group</code></pre>
@@ -183,10 +183,10 @@ OBJ1</code></pre></div>
   |=================================================================| 100%</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OBJ3</code></pre></div>
 <pre><code>## class: BSDMCs 
-## dim: 150 8 
+## dim: 900 8 
 ## metadata(3): K Beta Pm
-## assays(4): methReads totalReads methLevels methStates
-## rownames(150): 1 2 ... 149 150
+## assays(5): methReads totalReads methLevels methStates methVars
+## rownames(900): 1 2 ... 899 900
 ## rowData names(0):
 ## colnames(8): A B ... G H
 ## colData names(1): Group</code></pre>
@@ -210,16 +210,14 @@ OBJ1</code></pre></div>
   |======================================================           |  83%
   |                                                                       
   |=================================================================| 100%</code></pre>
-<pre><code>## Warning in fdrtool(x, statistic = &quot;pvalue&quot;, plot = FALSE, verbose = FALSE):
-## There may be too few input test statistics for reliable FDR calculations!</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">metadata</span>(OBJ4)$DMCHMM)</code></pre></div>
-<pre><code>##   DMCs   pvalues   qvalues DMCsGroupG1vsG2 methDirGroupG1vsG2
-## 1    0 0.3305061 0.6196375               0               hypo
-## 2    0 0.1940082 0.6087899               0               hypo
-## 3    0 0.2589511 0.6153313               0              hyper
-## 4    0 0.1969610 0.6091770               0              hyper
-## 5    0 0.4212531 0.6260706               0              hyper
-## 6    0 0.3252089 0.6193820               0               hypo</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">metadata</span>(OBJ4)<span class="op">$</span>DMCHMM)</code></pre></div>
+<pre><code>##   DMCs    pvalues qvalues DMCsGroupG1vsG2 methDirGroupG1vsG2
+## 1    0 0.84381760       1               0              equal
+## 2    0 0.25879039       1               0              hyper
+## 3    0 0.06137335       1               0              hyper
+## 4    0 0.08038486       1               0               hypo
+## 5    0 0.03008924       1               0              hyper
+## 6    0 0.43566410       1               0              hyper</code></pre>
 </div>
 
 

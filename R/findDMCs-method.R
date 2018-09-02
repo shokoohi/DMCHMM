@@ -1,12 +1,13 @@
-.findDMCs <- function(object, formula, FDRthreshold, Methylthreshold, mc.cores){
+.findDMCs <- function(object, formula, FDRthreshold, Methylthreshold, mc.cores,
+    weightfunction){
 
-    if (missing(object) | class(object) != "BSDMCs")
+    if (missing(object) | is(object)[1] != "BSDMCs")
         stop("A BSDMCs object must be provided.")
 
     if (missing(formula)) {
         formula = as.formula(paste("Methylation",
             paste(c(names(colData(object))), collapse = " + "), sep = " ~ "))
-    } else if (!class(formula) == "formula") {
+    } else if (is(formula)[1] == "formula") {
         stop("Either provide a formula or leave it blank.")
     } else {
         if (!all(all.vars(formula) %in% names(colData(object)))) {
@@ -41,22 +42,28 @@
         mc.cores = multicoreWorkers()
     } else if (!is.numeric(mc.cores) | mc.cores <= 0)
     {
-        stop("An integer value greater than 0 must be provided for mc.cores")
+        stop("An integer value greater than 0 must be provided for mc.cores.")
     }
     mc.cores = as.integer(mc.cores)
 
+    if (missing(weightfunction)) {
+        weightfunction = NULL
+    } else if (!is.function(weightfunction)){
+        stop("An function must be provided to create weights based on variances
+        obtained form the MCMC algorithm.")
+    }
     strand(object) <- "*"
     object <- sort(object)
 
     object.df <- as.data.frame(colData(object))
     object.df <- object.df[all.vars(formula)[all.vars(formula) %in%
                                             names(colData(object))]]
-    ind1 <- sapply(object.df, is.character)
+    ind1 <- vapply(object.df, is.character, logical(1))
     object.df[ind1] <- lapply(object.df[ind1], as.factor)
-    ind1 <- sapply(object.df, is.factor)
+    ind1 <- vapply(object.df, is.factor, logical(1))
     object.df.factor <- as.data.frame(object.df[, ind1])
     names(object.df.factor) <- names(object.df)[ind1]
-    ind1 <- sapply(object.df.factor, nlevels)>1
+    ind1 <- vapply(object.df.factor, nlevels, numeric(1))>1
     fnames <- names(object.df.factor)[ind1]
     object.df.factor <- as.data.frame(object.df.factor[,ind1])
     names(object.df.factor) <- fnames
@@ -66,10 +73,13 @@
 
     nPos = nrow(object)
     nSam = length(colnames(object))
+    methlist <- list(methLevels = assays(object)$methLevels,
+                    methVars = assays(object)$methVars)
 
     optbp <- MulticoreParam(workers = mc.cores, progressbar = TRUE)
     .mfun3 <- function(itr){
-        dat = data.frame(Methylation = c(assays(object)$methLevels[itr, ]))
+        dat = data.frame(Methylation = c(methlist$methLevels[itr, ]),
+                        Weights = c(methlist$methVars[itr, ]))
         dat = cbind(dat, object.df)
         dat$Methylation[dat$Methylation < 1e-10] <- 1e-10
         dat$Methylation[dat$Methylation > 0.9999999999] <- 0.9999999999
@@ -78,12 +88,20 @@
         dat$Methylation <- log(dat$Methylation/(1 - dat$Methylation))
         dat$Methylation[is.na(dat$Methylation)] <- mean(dat$Methylation,
                                                         na.rm = TRUE)
-
-        options(show.error.messages = FALSE)
-        suppressWarnings(lmodel <- try(lm(formula = formula, data = dat),
-            silent = TRUE))
-        options(show.error.messages = TRUE)
-        if ((class(lmodel) == "try-error")) {
+        if(!is.null(weightfunction)){
+            dat$Weights = weightfunction(c(methlist$methVars[itr, ]))
+            options(show.error.messages = FALSE)
+            suppressWarnings(lmodel <- try(lm(formula = formula,
+                                            weights = Weights,
+                                            data = dat), silent = TRUE))
+            options(show.error.messages = TRUE)
+        }else{
+            options(show.error.messages = FALSE)
+            suppressWarnings(lmodel <- try(lm(formula = formula,
+                                            data = dat), silent = TRUE))
+            options(show.error.messages = TRUE)
+        }
+        if ((is(lmodel)[1] == "try-error")) {
             p.val <- NA
             dmcs <- NA
             methDir <- NA
@@ -152,7 +170,7 @@
                         suppressWarnings(lmodelc <- try(glht(lmodel,
                                                 linfct = bb, silent = TRUE)))
                         options(show.error.messages = TRUE)
-                        if ((class(lmodelc) == "try-error")) {
+                        if ((is(lmodelc)[1] == "try-error")) {
                             dmcs <- c(dmcs, rep(NA, nGroup))
                         } else {
                             hhh <- (summary(lmodelc)$test$pvalues)
@@ -179,6 +197,11 @@
         qval <- fdr.fun(pval)
     } else {
         new.pval <- split(pval, ceiling(seq_along(pval)/500))
+        aa = length(new.pval)
+        if(length(new.pval[[aa]])<300){
+            new.pval[[aa-1]] <- c(new.pval[[aa-1]] , new.pval[[aa]])
+            new.pval = new.pval[-aa]
+        }
         qval <- as.vector(unlist(lapply(new.pval, fdr.fun)))
     }
 
@@ -187,12 +210,13 @@
     nfactor <- dim(object.df.factor)[2]
     namesPairDMC <- namesPairDIR <- NULL
     if (nfactor > 0) {
-        nGroupS <- unlist(sapply(object.df.factor,
-                                function (x) length(levels(x))))
-        nPairs <- sapply(nGroupS, function (x) ncol(combn(1:x, 2)))
-        np <- unlist(sapply(object.df.factor,
-                function(x) paste(combn(levels(x), 2)[1, ],
-                    combn(levels(x), 2)[2, ], sep = "vs")))
+        nGroupS <- unlist(vapply(object.df.factor,
+                                function (x) {length(levels(x))}, numeric(1)))
+        nPairs <- vapply(nGroupS, function (x) {ncol(combn(seq_len(x), 2))},
+                        numeric(1))
+        np <- unlist(vapply(object.df.factor,
+                function(x) {paste(combn(levels(x), 2)[1, ],
+                    combn(levels(x), 2)[2, ], sep = "vs")}, character(1)))
         names(np) <- NULL
         namesPairDMC <- c(paste("DMCs", rep(names(object.df.factor),
                                             nPairs), np, sep = ""))
@@ -233,5 +257,5 @@
 #' @aliases findDMCs-method findDMCs
 setMethod("findDMCs", signature = c(object = "BSDMCs",
     formula = "ANY", FDRthreshold = "ANY", Methylthreshold = "ANY",
-    mc.cores = "ANY"), .findDMCs)
+    mc.cores = "ANY", weightfunction =  "ANY"), .findDMCs)
 

@@ -9,7 +9,7 @@
     strand(object) <- "*"
     object = sort(object)
 
-    for (i in 1:ncol(object)) {
+    for (i in seq_len(ncol(object))) {
         object.i <- object[, i]
         ind.cov <- totalReads(object.i) != 0
         if (sum(ind.cov) > 1) {
@@ -43,7 +43,7 @@
     colFunc <- colorRamp(colors = c("green", "black", "red"))
     object = sort(object)
 
-    for (i in 1:ncol(object)) {
+    for (i in seq_len(ncol(object))) {
         object.i <- object[, i]
         ind.cov <- !is.na(methLevels(object.i))
         if (sum(ind.cov) > 1) {

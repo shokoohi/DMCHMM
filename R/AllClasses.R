@@ -12,6 +12,8 @@
 #' methylation level spanning a CpG-site using Hidden Markov model. The rows
 #' represent the CpG sites in \code{rowRanges} and the columns represent the
 #' samples in \code{colData}.
+#' @param methVars The matrix \code{methVars} contains the variances of the
+#' corresponding \code{methLevels} obtianed from MCMC.
 #' @param methStates The matrix \code{methStates} contains the state of
 #' methylation obtained from Hidden Markov model spanning a CpG-site. The rows
 #' represent the CpG sites in \code{rowRanges} and the columns represent the
@@ -46,6 +48,8 @@
 #' @param formula A formula
 #' @param FDRthreshold A numeric value
 #' @param Methylthreshold A numeric value
+#' @param weightfunction A function to create weights using variance obtained
+#' form the MCMC algorithm
 #' @param ... other possible parameters
 #' @param col A character vector indicating which colors to alternate.
 #' @param chrlabs A character vector equal to the number of chromosomes
@@ -108,10 +112,10 @@ setValidity("BSData", function(object){
     if(!(all( is.element(names(assays(object)), c("methReads", "totalReads")))))
     return("The assays slot in BSData object must contain methReads and
     totalReads")
-    if(!all( sapply(assays(object), class) == "matrix" ))
+    if(!all( vapply(assays(object), class, character(1)) == "matrix" ))
     return("The methReads and totalReads slots of an BSData object must be
     matrices.")
-    if(!all(sapply(assays(object), typeof) == "integer" ))
+    if(!all(vapply(assays(object), typeof, character(1)) == "integer" ))
     return("The methReads and totalReads matrices of an BSData object must
     contain integer data.")})
 
@@ -126,6 +130,7 @@ setValidity("BSData", function(object){
 #' @slot totalReads An integer matrix
 #' @slot methLevels A numeric matrix
 #' @slot methStates An integer matrix
+#' @slot methVars A double matrix
 #' @param methReads The matrix \code{methReads} contains the number of
 #' methylated reads spanning a CpG-site. The rows represent the CpG sites in
 #' \code{rowRanges} and the columns represent the samples in \code{colData}.
@@ -141,6 +146,8 @@ setValidity("BSData", function(object){
 #' represent the CpG sites in \code{rowRanges} and the columns represent the
 #' samples in \code{colData}. The value of state is stored in \code{metadata},
 #' named \code{Beta}.
+#' @param methVars The matrix \code{methVars} contains the variances of the
+#' corresponding \code{methLevels} obtianed from MCMC.
 #' @docType class
 #' @keywords object
 #' @return A \code{\link{BSDMCs-class}} object
@@ -150,32 +157,34 @@ setValidity("BSData", function(object){
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
 #' methl <- methc/metht
-#' r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
+#' methv <- matrix((runif(nr * nc, 0.1, 0.5)), nr)
+#' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
 #' names(r1) <- 1:nr
-#' cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
+#' cd1 <- DataFrame(Group=rep(c('G1','G2'),each=nc/2),row.names=LETTERS[1:nc])
 #' OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
-#' methLevels=methl,methStates=meths,colData=cd1)
+#' methLevels=methl,methStates=meths,methVars=methv,colData=cd1)
 #' OBJ2
 #' @exportClass BSDMCs
 BSDMCs <- setClass("BSDMCs",
     representation(methReads = "matrix", totalReads = "matrix",
-    methLevels = "matrix", methStates = "matrix"),
+    methLevels = "matrix", methStates = "matrix", methVars = "matrix"),
     prototype (methReads = matrix(), totalReads = matrix(),
-    methLevels = matrix(), methStates = matrix()),
+    methLevels = matrix(), methStates = matrix(), methVars = matrix()),
     contains = "RangedSummarizedExperiment")
 
 setValidity("BSDMCs", function(object){
-    if(length(assays(object)) != 4)
-    return("The assays slot in BSDMCs object must be of length four.")
+    if(length(assays(object)) != 5)
+    return("The assays slot in BSDMCs object must be of length five.")
     if(!(all( is.element(names(assays(object)), c("methReads", "totalReads",
-    "methLevels", "methStates")))))
+    "methLevels", "methStates", "methVars")))))
     return("The assays slot in BSDMCs object must contain totalReads,
-    methReads, methStates and methLevels.")
-    if(!all( sapply(assays(object), class) == "matrix" ))
-    return("The methReads, totalReads, methLevels and methStates slots of a
-    BSDMCs object must be matrices.")
-    if(!all(sapply(assays(object), typeof) ==
-    c("integer", "integer", "double","integer")))
-    return("The methReads, totalReads, methLevels and methStates slots of a
-    BSDMCs object must be integer, integer, double, and integer, repectively.")}
+    methReads, methStates, methLevels and methVars.")
+    if(!all( vapply(assays(object), class, character(1)) == "matrix" ))
+    return("The methReads, totalReads, methLevels, methStates and methVars slots
+    of a BSDMCs object must be matrices.")
+    if(!all(vapply(assays(object), typeof, character(1)) ==
+    c("integer", "integer", "double", "integer", "double")))
+    return("The methReads, totalReads, methLevels, methStates and methVars slots
+    of a BSDMCs object must be integer, integer, double, integer and double,
+    repectively.")}
     )

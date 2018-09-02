@@ -4,12 +4,11 @@
 \name{manhattanDMCs-method}
 \alias{manhattanDMCs-method}
 \alias{manhattanDMCs,BSDMCs-method}
-\alias{manhattanDMCs-method}
 \alias{manhattanDMCs}
 \title{manhattanDMCs method}
 \usage{
-manhattanDMCs(object, col, chrlabs, suggestiveline, genomewideline, highlight,
-  logp, annotatePval, annotateTop, ...)
+manhattanDMCs(object, col, chrlabs, suggestiveline, genomewideline,
+  highlight, logp, annotatePval, annotateTop, ...)
 
 \S4method{manhattanDMCs}{BSDMCs}(object, col, chrlabs, suggestiveline,
   genomewideline, highlight, logp, annotatePval, annotateTop, ...)

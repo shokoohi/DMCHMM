@@ -57,9 +57,17 @@
     methLevels.new[, ] <- cbind(methLevels(obj1)[ind.match.obj1, ],
                                 methLevels(obj2)[ind.match.obj2, ])
     methLevels.new[is.na(methLevels.new)] <- 0L
+
+    methVars.new <- matrix(integer(length = nr * nc), ncol = nc, nrow = nr,
+        dimnames = list(names(rowRanges.new), rownames(colData.new)))
+    methVars.new[, ] <- cbind(methVars(obj1)[ind.match.obj1, ],
+                                methVars(obj2)[ind.match.obj2, ])
+    methVars.new[is.na(methVars.new)] <- 0L
+
     z <- cBSDMCs(methReads = methReads.new, totalReads = totalReads.new,
         methLevels = methLevels.new, methStates = methStates.new,
-        rowRanges = rowRanges.new, colData = colData.new)
+        methVars = methVars.new, rowRanges = rowRanges.new,
+        colData = colData.new)
     return(z)
 }
 

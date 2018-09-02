@@ -24,6 +24,9 @@ methylation obtained from Hidden Markov model spanning a CpG-site. The rows
 represent the CpG sites in \code{rowRanges} and the columns represent the
 samples in \code{colData}. The value of state is stored in \code{metadata},
 named \code{Beta}.}
+
+\item{methVars}{The matrix \code{methVars} contains the variances of the
+corresponding \code{methLevels} obtianed from MCMC.}
 }
 \value{
 A \code{\link{BSDMCs-class}} object
@@ -42,6 +45,8 @@ differentially methylated CpG sites (DMCs) in BS-Seq Data.
 \item{\code{methLevels}}{A numeric matrix}
 
 \item{\code{methStates}}{An integer matrix}
+
+\item{\code{methVars}}{A double matrix}
 }}
 
 \examples{
@@ -50,11 +55,12 @@ metht <- matrix(as.integer(runif(nr * nc, 0, nr)), nr)
 methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
 methl <- methc/metht
-r1 <- GRanges(rep("chr1", nr), IRanges(1:nr, width=1), strand="*")
+methv <- matrix((runif(nr * nc, 0.1, 0.5)), nr)
+r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
 names(r1) <- 1:nr
-cd1 <- DataFrame(Group=rep(c("G1","G2"),each=nc/2),row.names=LETTERS[1:nc])
+cd1 <- DataFrame(Group=rep(c('G1','G2'),each=nc/2),row.names=LETTERS[1:nc])
 OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
-methLevels=methl,methStates=meths,colData=cd1)
+methLevels=methl,methStates=meths,methVars=methv,colData=cd1)
 OBJ2
 }
 \author{

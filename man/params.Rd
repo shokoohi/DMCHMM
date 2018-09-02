@@ -17,6 +17,9 @@ methylation level spanning a CpG-site using Hidden Markov model. The rows
 represent the CpG sites in \code{rowRanges} and the columns represent the
 samples in \code{colData}.}
 
+\item{methVars}{The matrix \code{methVars} contains the variances of the
+corresponding \code{methLevels} obtianed from MCMC.}
+
 \item{methStates}{The matrix \code{methStates} contains the state of
 methylation obtained from Hidden Markov model spanning a CpG-site. The rows
 represent the CpG sites in \code{rowRanges} and the columns represent the
@@ -72,6 +75,9 @@ object}
 \item{FDRthreshold}{A numeric value}
 
 \item{Methylthreshold}{A numeric value}
+
+\item{weightfunction}{A function to create weights using variance obtained
+form the MCMC algorithm}
 
 \item{...}{other possible parameters}
 

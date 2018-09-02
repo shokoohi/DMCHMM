@@ -4,7 +4,6 @@
 \name{qqDMCs-method}
 \alias{qqDMCs-method}
 \alias{qqDMCs,BSDMCs-method}
-\alias{qqDMCs-method}
 \alias{qqDMCs}
 \title{qqDMCs method}
 \usage{

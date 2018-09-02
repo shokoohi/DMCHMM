@@ -5,45 +5,50 @@
         nw <- rep(1, length(Yv))
     }
     nPos = length(Yv)
+    eps1 = 0.000000000000000000001
 
     pX.filter = array(0, c(nPos, Kv + 2))
-    dimnames(pX.filter) = list(index = 1:nPos, states = c(1:(Kv + 2)))
+    dimnames(pX.filter) = list(index = seq_len(nPos),
+                            states = c(seq_len(Kv + 2)))
 
     X.filter = array(0, c(nPos))
-    dimnames(X.filter) = list(index = 1:nPos)
+    dimnames(X.filter) = list(index = seq_len(nPos))
 
     pX.predict = array(0, c(nPos, Kv + 2))
-    dimnames(pX.predict) = list(index = 1:nPos, states = c(1:(Kv + 2)))
+    dimnames(pX.predict) = list(index = seq_len(nPos),
+                            states = c(seq_len(Kv + 2)))
 
     pX.smooth = array(0, c(nPos, Kv + 2))
-    dimnames(pX.smooth) = list(index = 1:nPos, states = c(1:(Kv + 2)))
+    dimnames(pX.smooth) = list(index = seq_len(nPos),
+                        states = c(seq_len(Kv + 2)))
 
     X.smooth = array(0, c(nPos))
-    dimnames(X.smooth) = list(index = 1:nPos)
+    dimnames(X.smooth) = list(index = seq_len(nPos))
 
     W01k.Estep = array(0, c(Kv + 2))
-    dimnames(W01k.Estep) = list(states = c(1:(Kv + 2)))
+    dimnames(W01k.Estep) = list(states = c(seq_len(Kv + 2)))
 
     Wik.Estep = array(0, c(nPos, Kv + 2))
-    dimnames(Wik.Estep) = list(index = 1:nPos, states = c(1:(Kv + 2)))
+    dimnames(Wik.Estep) = list(index = seq_len(nPos),
+                            states = c(seq_len(Kv + 2)))
 
     Wijk.Estep = array(0, c(nPos - 1, Kv + 2, Kv + 2))
-    dimnames(Wijk.Estep) = list(index = 2:nPos, states = c(1:(Kv + 2)),
-        states = c(1:(Kv + 2)))
+    dimnames(Wijk.Estep) = list(index = 2:nPos, states = c(seq_len(Kv + 2)),
+        states = c(seq_len(Kv + 2)))
 
-    pv <- exp(c(xv[1:Kv], 0))
+    pv <- exp(c(xv[seq_len(Kv)], 0))
     pv <- pv/sum(pv)
     pv <- c(0, cumsum(pv))
 
     Pm <- matrix(0, nrow = Kv + 2, ncol = Kv + 2)
-    Pm[, 1:(Kv + 1)] <- matrix(xv[c((Kv + 1):(Kv + (Kv + 2) * (Kv + 1)))],
+    Pm[, seq_len(Kv + 1)] <- matrix(xv[c((Kv + 1):(Kv + (Kv + 2) * (Kv + 1)))],
         Kv + 2, Kv + 1)
     Pm <- t(apply(exp(Pm), 1, function(x) {
         return(x/sum(x))
     }))
 
     Pi0 <- Pm
-    for (i in 1:100) Pi0 <- Pi0 %*% Pm
+    for (i in seq_len(100)) Pi0 <- Pi0 %*% Pm
     Pi0 <- Pi0[1, ]
 
     diffpar = 1
@@ -54,19 +59,20 @@
         pX.predict[1, ] <- t(t(Pm) %*% Pi0)
         # prediction
         pmarg <- sum(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])
+        if(is.na(pmarg) | is.infinite(pmarg) | pmarg<eps1) pmarg = eps1
         # marginal
         pX.filter[1, ] <- c(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])/pmarg
 
         for (i in 2:nPos) {
             pX.predict[i, ] <- t(t(Pm) %*% pX.filter[i - 1, ])
             pmarg <- sum(dbinom(Yv[i], nv[i], pv) * pX.predict[i, ])
-            pmarg <- ifelse(pmarg < 1e-200, 1e-200, pmarg)
+            if(is.na(pmarg) | is.infinite(pmarg) | pmarg<eps1) pmarg = eps1
             pX.filter[i, ] <- c(dbinom(Yv[i], nv[i], pv) * pX.predict[i,
                 ])/pmarg
         }
         pX.smooth[nPos, ] <- pX.filter[nPos, ]
         for (i in (nPos - 1):1) {
-            hh <- (pX.smooth[i + 1, ]/pX.predict[i + 1, ])
+            hh <- pX.smooth[i + 1, ]/(pX.predict[i + 1, ] + eps1)
             hh[is.na(hh)] <- 0
             pX.smooth[i, ] <- pX.filter[i, ] * (Pm %*% hh)
         }
@@ -78,19 +84,25 @@
         for (i in 2:nPos) {
             Wijk.Estep[i - 1, , ] = ((Pm * matrix((pX.filter[i - 1, ]),
                 Kv + 2, Kv + 2)) * matrix(pX.smooth[i, ], Kv + 2, Kv +
-                2, byrow = TRUE))/matrix(pX.predict[i, ], Kv + 2, Kv +
-                2, byrow = TRUE)
+                2, byrow = TRUE))/(matrix(pX.predict[i, ], Kv + 2, Kv +
+                2, byrow = TRUE) + eps1)
         }
         Wijk.Estep[is.na(Wijk.Estep)] <- 0
-        new.pv = ((nw * Yv) %*% Wik.Estep)/((nw * nv) %*% Wik.Estep)
+        new.pv = ((nw * Yv) %*% Wik.Estep)/((nw * nv) %*% Wik.Estep + eps1)
+        new.pv[1] = 0
+        new.pv[Kv+2] = 1
 
         new.Pm <- apply(Wijk.Estep, 2:3, function(x) sum(x)) /
-            apply(Wijk.Estep, 3, function(x) sum(x))
+            (apply(Wijk.Estep, 3, function(x) sum(x)) + eps1)
+        new.Pm[is.na(new.Pm)] = 0
+        new.Pm[is.infinite(new.Pm)] = 0
+        new.Pm[new.Pm<=0] = 0
+        new.Pm[new.Pm>=1] = 1
 
         # folowing lines will be activated if we are seeking an alternative
         # estimator for initial probabilities.
         tmppi <- new.Pm
-        for (i in 1:100) tmppi = tmppi %*% new.Pm
+        for (i in seq_len(100)) tmppi = tmppi %*% new.Pm
         new.Pi0 = tmppi[1, ]
 
         diffpar = 0
@@ -108,6 +120,7 @@
     mlike <- 0
     pX.predict[1, ] <- t(t(Pm) %*% Pi0)
     pmarg <- sum(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])
+    if(is.na(pmarg) | is.infinite(pmarg) | pmarg<eps1) pmarg = eps1
     pX.filter[1, ] <- c(dbinom(Yv[1], nv[1], pv) * pX.predict[1, ])/pmarg
     X.filter[1] <- which.max(pX.filter[1, ])
     mlike <- mlike + nw[1] * log(pmarg)
@@ -115,6 +128,7 @@
     for (i in 2:nPos) {
         pX.predict[i, ] <- t(t(Pm) %*% pX.filter[i - 1, ])
         pmarg <- sum(dbinom(Yv[i], nv[i], pv) * pX.predict[i, ])
+        if(is.na(pmarg) | is.infinite(pmarg) | pmarg<eps1) pmarg = eps1
         pX.filter[i, ] <- c(dbinom(Yv[i], nv[i], pv) * pX.predict[i, ])/pmarg
         X.filter[i] <- which.max(pX.filter[i, ])
         mlike <- mlike + nw[i] * log(pmarg)
@@ -122,7 +136,7 @@
     pX.smooth[nPos, ] <- pX.filter[nPos, ]
     X.smooth[nPos] <- which.max(pX.smooth[nPos, ])
     for (i in (nPos - 1):1) {
-        hh = (pX.smooth[i + 1, ]/pX.predict[i + 1, ])
+        hh = pX.smooth[i + 1, ]/(pX.predict[i + 1, ] + eps1)
         hh[is.na(hh)] = 0
         pX.smooth[i, ] <- pX.filter[i, ] * (Pm %*% hh)
         X.smooth[i] <- which.max(pX.smooth[i, ])
@@ -160,9 +174,12 @@
         logMlik <- xEM$mlike
         BIC <- -2 * logMlik + log(length(yy)) * (K + (K + 2) * (K + 1) +
             (K + 1))
-        if ((BIC < BICmax) & (!is.na(BIC))) {
-            BICmax = BIC
-            EstHMMSam1 = list(xEM = xEM, K = K, logMlik = logMlik, BIC = BIC)
+        if (!is.na(BIC)){
+            if (BIC < BICmax ) {
+                BICmax = BIC
+                EstHMMSam1 = list(xEM = xEM, K = K, logMlik = logMlik,
+                                BIC = BIC)
+            }
         }
     }
     return(EstHMMSam1)
@@ -170,7 +187,7 @@
 
 .methHMEM <- function(object, MaxK, MaxEmiter, epsEM, useweight, mc.cores) {
 
-    if (missing(object) | class(object) != "BSData")
+    if (missing(object) | is(object)[1] != "BSData")
         stop("A BSData object must be provided.")
 
     if (missing(MaxK)) {
@@ -231,12 +248,16 @@
     Phat <- lapply(totres, function(elt) elt$xEM$Pm)
     methLevels.new <- vapply(totres, function(elt) elt$xEM$X.estimate,
                             numeric(nPos))
+    methVars.new = methLevels.new
+    methVars.new[] = 0
     methStates.new <- vapply(totres, function(elt) elt$xEM$X.smooth - 1,
                             numeric(nPos))
     storage.mode(methStates.new) <- "integer"
 
     colnames(methLevels.new) <- colnames(object)
     rownames(methLevels.new) <- NULL
+    colnames(methVars.new) <- colnames(object)
+    rownames(methVars.new) <- NULL
     colnames(methStates.new) <- colnames(object)
     rownames(methStates.new) <- NULL
 
@@ -244,6 +265,7 @@
                             totalReads = totalReads(object),
                             methStates = apply(methStates.new, 2, as.integer),
                             methLevels = methLevels.new,
+                            methVars = methVars.new,
                             colData = colData(object),
                             rowRanges = rowRanges(object))
     metadata(predictedMeth)$K = Khat

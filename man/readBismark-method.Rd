@@ -4,14 +4,9 @@
 \name{readBismark-method}
 \alias{readBismark-method}
 \alias{readBismark,character,DataFrame-method}
-\alias{readBismark-method}
 \alias{readBismark}
 \alias{readBismark,character,data.frame-method}
-\alias{readBismark-method}
-\alias{readBismark}
 \alias{readBismark,character,character-method}
-\alias{readBismark-method}
-\alias{readBismark}
 \title{readBismark method}
 \usage{
 readBismark(files, colData)

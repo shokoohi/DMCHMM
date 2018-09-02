@@ -26,7 +26,7 @@
 #' OBJ1
 #' @exportMethod cBSData
 setGeneric("cBSData", function(methReads, totalReads, rowRanges, colData =
-                                DataFrame(row.names = colnames(methReads)),
+                            DataFrame(row.names = colnames(methReads)),
                             metadata = list(), ...) standardGeneric("cBSData"),
     signature = c("methReads", "totalReads", "rowRanges"))
 
@@ -115,17 +115,20 @@ setGeneric("totalReads<-", function(object,value)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
 #' methl <- methc/metht
+#' methv <- matrix((runif(nr * nc, 0.1, 0.5)), nr)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c('G1','G2'),each=nc/2),row.names=LETTERS[1:nc])
 #' OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
-#' methLevels=methl,methStates=meths,colData=cd1)
+#' methLevels=methl,methStates=meths,methVars=methv,colData=cd1)
 #' OBJ2
 #' @exportMethod cBSDMCs
 setGeneric("cBSDMCs", function(methReads, totalReads, methLevels, methStates,
-        rowRanges, colData = DataFrame(row.names = colnames(methReads)),
+        methVars, rowRanges,
+        colData = DataFrame(row.names = colnames(methReads)),
         metadata = list(), ...) standardGeneric("cBSDMCs"), signature =
-        c("methReads", "totalReads", "methLevels", "methStates", "rowRanges"))
+        c("methReads", "totalReads", "methLevels", "methStates", "methVars",
+        "rowRanges"))
 
 #' @title methReads method
 #' @description Returns \code{methReads} stored in \code{\link{BSDMCs-class}}
@@ -179,11 +182,12 @@ setGeneric("totalReads<-", function(object, value)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
 #' methl <- methc/metht
+#' methv <- matrix((runif(nr * nc, 0.1, 0.5)), nr)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c('G1','G2'),each=nc/2),row.names=LETTERS[1:nc])
 #' OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
-#' methLevels=methl,methStates=meths,colData=cd1)
+#' methLevels=methl,methStates=meths,methVars=methv,colData=cd1)
 #' methLevels(OBJ2)
 #' @exportMethod methLevels
 setGeneric("methLevels", function(object) standardGeneric("methLevels"))
@@ -214,11 +218,12 @@ setGeneric("methLevels<-", function(object, value)
 #' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 #' meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
 #' methl <- methc/metht
+#' methv <- matrix((runif(nr * nc, 0.1, 0.5)), nr)
 #' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
 #' names(r1) <- 1:nr
 #' cd1 <- DataFrame(Group=rep(c('G1','G2'),each=nc/2),row.names=LETTERS[1:nc])
 #' OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
-#' methLevels=methl,methStates=meths,colData=cd1)
+#' methLevels=methl,methStates=meths,methVars=methv,colData=cd1)
 #' methStates(OBJ2)
 #' @exportMethod methStates
 setGeneric("methStates", function(object) standardGeneric("methStates"))
@@ -234,6 +239,42 @@ setGeneric("methStates", function(object) standardGeneric("methStates"))
 #' @exportMethod methStates<-
 setGeneric("methStates<-", function(object, value)
     standardGeneric("methStates<-"))
+
+#' @title methVars method
+#' @description Returns \code{methVars} stored in \code{\link{BSDMCs-class}}
+#' @author Farhad Shokoohi <shokoohi@icloud.com>
+#' @name methVars-method
+#' @import S4Vectors
+#' @inheritParams params
+#' @return A matrix
+#' @examples
+#' set.seed(1980)
+#' nr <- 150; nc <- 8
+#' metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
+#' methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
+#' meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
+#' methl <- methc/metht
+#' methv <- matrix((runif(nr * nc, 0.1, 0.5)), nr)
+#' r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
+#' names(r1) <- 1:nr
+#' cd1 <- DataFrame(Group=rep(c('G1','G2'),each=nc/2),row.names=LETTERS[1:nc])
+#' OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
+#' methLevels=methl,methStates=meths,methVars=methv,colData=cd1)
+#' methVars(OBJ2)
+#' @exportMethod methVars
+setGeneric("methVars", function(object) standardGeneric("methVars"))
+
+#' @title methVars method
+#' @description Assigns \code{methVars} to \code{\link{BSDMCs-class}}
+#' @name methVars-method
+#' @import S4Vectors
+#' @inheritParams params
+#' @return A \code{\link{BSDMCs-class}} object
+#' @examples
+#' methVars(OBJ2)<- meths
+#' @exportMethod methVars<-
+setGeneric("methVars<-", function(object, value)
+    standardGeneric("methVars<-"))
 
 #' @title combine method
 #' @description combine two \code{\link{BSData-class}} or
@@ -382,7 +423,7 @@ setGeneric("methHMMCMC", function(object, useweight, nburn, nthin, nsamp,
 #' head(metadata(OBJ4)$DMCHMM)
 #' @exportMethod findDMCs
 setGeneric("findDMCs", function(object, formula, FDRthreshold, Methylthreshold,
-    mc.cores) standardGeneric("findDMCs"))
+    mc.cores, weightfunction) standardGeneric("findDMCs"))
 
 #' @title qqDMCs method
 #' @description Creates a Q-Q plot based on the p-values obtained

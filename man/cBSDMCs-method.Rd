@@ -3,18 +3,18 @@
 \docType{methods}
 \name{cBSDMCs-method}
 \alias{cBSDMCs-method}
-\alias{cBSDMCs,matrix,matrix,matrix,matrix,GRanges-method}
-\alias{cBSDMCs-method}
+\alias{cBSDMCs,matrix,matrix,matrix,matrix,matrix,GRanges-method}
 \alias{cBSDMCs}
 \title{cBSDMCs method}
 \usage{
-cBSDMCs(methReads, totalReads, methLevels, methStates, rowRanges,
-  colData = DataFrame(row.names = colnames(methReads)), metadata = list(),
-  ...)
+cBSDMCs(methReads, totalReads, methLevels, methStates, methVars, rowRanges,
+  colData = DataFrame(row.names = colnames(methReads)),
+  metadata = list(), ...)
 
-\S4method{cBSDMCs}{matrix,matrix,matrix,matrix,GRanges}(methReads, totalReads,
-  methLevels, methStates, rowRanges, colData = DataFrame(row.names =
-  colnames(methReads)), metadata = list(), ...)
+\S4method{cBSDMCs}{matrix,matrix,matrix,matrix,matrix,GRanges}(methReads,
+  totalReads, methLevels, methStates, methVars, rowRanges,
+  colData = DataFrame(row.names = colnames(methReads)),
+  metadata = list(), ...)
 }
 \arguments{
 \item{methReads}{The matrix \code{methReads} contains the number of
@@ -35,6 +35,9 @@ methylation obtained from Hidden Markov model spanning a CpG-site. The rows
 represent the CpG sites in \code{rowRanges} and the columns represent the
 samples in \code{colData}. The value of state is stored in \code{metadata},
 named \code{Beta}.}
+
+\item{methVars}{The matrix \code{methVars} contains the variances of the
+corresponding \code{methLevels} obtianed from MCMC.}
 
 \item{rowRanges}{A \code{\link{GRanges}} or \code{\link{GRangesList}}
 object describing the ranges of interest. Names, if present, become the row
@@ -76,11 +79,12 @@ metht <- matrix(as.integer(runif(nr * nc, 0, 100)), nr)
 methc <- matrix(rbinom(n=nr*nc,c(metht),prob = runif(nr*nc)),nr,nc)
 meths <- matrix(as.integer(runif(nr * nc, 0, 10)), nr)
 methl <- methc/metht
+methv <- matrix((runif(nr * nc, 0.1, 0.5)), nr)
 r1 <- GRanges(rep('chr1', nr), IRanges(1:nr, width=1), strand='*')
 names(r1) <- 1:nr
 cd1 <- DataFrame(Group=rep(c('G1','G2'),each=nc/2),row.names=LETTERS[1:nc])
 OBJ2 <- cBSDMCs(rowRanges=r1,methReads=methc,totalReads=metht,
-methLevels=methl,methStates=meths,colData=cd1)
+methLevels=methl,methStates=meths,methVars=methv,colData=cd1)
 OBJ2
 }
 \author{

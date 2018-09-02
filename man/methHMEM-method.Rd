@@ -4,13 +4,13 @@
 \name{methHMEM-method}
 \alias{methHMEM-method}
 \alias{methHMEM,BSData-method}
-\alias{methHMEM-method}
 \alias{methHMEM}
 \title{methHMEM method}
 \usage{
 methHMEM(object, MaxK, MaxEmiter, epsEM, useweight, mc.cores)
 
-\S4method{methHMEM}{BSData}(object, MaxK, MaxEmiter, epsEM, useweight, mc.cores)
+\S4method{methHMEM}{BSData}(object, MaxK, MaxEmiter, epsEM, useweight,
+  mc.cores)
 }
 \arguments{
 \item{object}{A \code{\link{BSData-class}} or \code{\link{BSDMCs-class}}

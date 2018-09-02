@@ -4,11 +4,8 @@
 \name{combine-method}
 \alias{combine-method}
 \alias{combine,BSData,BSData-method}
-\alias{combine-method}
 \alias{combine}
 \alias{combine,BSDMCs,BSDMCs-method}
-\alias{combine-method}
-\alias{combine}
 \title{combine method}
 \usage{
 combine(obj1, obj2)

@@ -10,7 +10,7 @@
     obtianed from findDMCs method.")
 
     if (missing(col)) {
-        col = c("gray10", "gray60")
+        col = c("gray70", "gray50")
     } else if (!is.character(col)) {
         stop("Provide a character vector indicating which colors to alternate!")
     }

@@ -4,13 +4,13 @@
 \name{methHMMCMC-method}
 \alias{methHMMCMC-method}
 \alias{methHMMCMC,BSDMCs-method}
-\alias{methHMMCMC-method}
 \alias{methHMMCMC}
 \title{methHMMCMC method}
 \usage{
 methHMMCMC(object, useweight, nburn, nthin, nsamp, mc.cores)
 
-\S4method{methHMMCMC}{BSDMCs}(object, useweight, nburn, nthin, nsamp, mc.cores)
+\S4method{methHMMCMC}{BSDMCs}(object, useweight, nburn, nthin, nsamp,
+  mc.cores)
 }
 \arguments{
 \item{object}{A \code{\link{BSData-class}} or \code{\link{BSDMCs-class}}

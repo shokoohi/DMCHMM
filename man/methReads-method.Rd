@@ -3,21 +3,12 @@
 \docType{methods}
 \name{methReads-method}
 \alias{methReads-method}
-\alias{methReads-method}
-\alias{methReads-method}
-\alias{methReads-method}
 \alias{methReads,BSData-method}
-\alias{methReads-method}
 \alias{methReads}
 \alias{methReads<-,BSData,matrix-method}
-\alias{methReads-method}
 \alias{methReads<-}
 \alias{methReads,BSDMCs-method}
-\alias{methReads-method}
-\alias{methReads}
 \alias{methReads<-,BSDMCs,matrix-method}
-\alias{methReads-method}
-\alias{methReads<-}
 \title{methReads method}
 \usage{
 methReads(object)

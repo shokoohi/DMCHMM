@@ -4,14 +4,14 @@
 \name{findDMCs-method}
 \alias{findDMCs-method}
 \alias{findDMCs,BSDMCs-method}
-\alias{findDMCs-method}
 \alias{findDMCs}
 \title{findDMCs method}
 \usage{
-findDMCs(object, formula, FDRthreshold, Methylthreshold, mc.cores)
+findDMCs(object, formula, FDRthreshold, Methylthreshold, mc.cores,
+  weightfunction)
 
 \S4method{findDMCs}{BSDMCs}(object, formula, FDRthreshold, Methylthreshold,
-  mc.cores)
+  mc.cores, weightfunction)
 }
 \arguments{
 \item{object}{A \code{\link{BSData-class}} or \code{\link{BSDMCs-class}}
@@ -24,6 +24,9 @@ object}
 \item{Methylthreshold}{A numeric value}
 
 \item{mc.cores}{An integer greater than 0}
+
+\item{weightfunction}{A function to create weights using variance obtained
+form the MCMC algorithm}
 }
 \value{
 \code{\link{BSDMCs-class}} object

@@ -2,9 +2,8 @@
     colData = DataFrame(row.names = colnames(methReads)), metadata = list(),
     ...) {
     new("BSData", SummarizedExperiment(assays =
-        SimpleList(totalReads = totalReads,
-        methReads = methReads), rowRanges = rowRanges, colData = colData,
-        metadata = list()))
+    SimpleList(totalReads = totalReads, methReads = methReads),
+    rowRanges = rowRanges, colData = colData, metadata = list()))
 }
 
 #' @rdname cBSData-method
