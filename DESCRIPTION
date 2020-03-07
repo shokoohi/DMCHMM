@@ -1,12 +1,12 @@
 Package: DMCHMM
 Type: Package
 Title: Differentially Methylated CpG using Hidden Markov Model
-Version: 1.3.1
+Version: 1.8.1
 Author: Farhad Shokoohi
 Maintainer: Farhad Shokoohi <shokoohi@icloud.com>
 Description: A pipeline for identifying differentially methylated CpG sites 
     using Hidden Markov Model in bisulfite sequencing data.
-Depends: R (>= 3.5.0),
+Depends: R (>= 3.6.0),
     SummarizedExperiment,
     methods,
     S4Vectors,
@@ -27,10 +27,10 @@ VignetteBuilder:
     knitr
 biocViews: DifferentialMethylation, Sequencing, HiddenMarkovModel, Coverage
 License: GPL-3
-Date: 2018-09-02
+Date: 2020-03-07
 Encoding: UTF-8
 LazyData: true
 BugReports: https://github.com/shokoohi/DMCHMM/issues
-RoxygenNote: 6.1.0
+RoxygenNote: 7.0.2
 NeedsCompilation: no
 Packaged: 2017-06-23 00:13:02 UTC; Farhad

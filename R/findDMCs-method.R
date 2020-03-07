@@ -75,6 +75,7 @@
     nSam = length(colnames(object))
     methlist <- list(methLevels = assays(object)$methLevels,
                     methVars = assays(object)$methVars)
+    Weights = c()
 
     optbp <- MulticoreParam(workers = mc.cores, progressbar = TRUE)
     .mfun3 <- function(itr){

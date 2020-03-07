@@ -4,9 +4,9 @@ author: "Farhad Shokoohi"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{DMCHMM}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteIndexEntry{Sending Messages With Gmailr}
+  %\usepackage[utf8]{inputenc}
 ---
 
 DNA methylation studies have increased in number over the past decade thanks 
