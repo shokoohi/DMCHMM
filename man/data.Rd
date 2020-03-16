@@ -4,7 +4,9 @@
 \name{data}
 \alias{data}
 \title{data}
-\format{BED files}
+\format{
+BED files
+}
 \source{
 Genomic Quebec
 }

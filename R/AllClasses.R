@@ -108,16 +108,16 @@ BSData <- setClass("BSData",
 
 setValidity("BSData", function(object){
     if(length(assays(object)) != 2)
-    return("The assays slot in BSData object must be of length two.")
+        return("The assays slot in BSData object must be of length two.")
     if(!(all( is.element(names(assays(object)), c("methReads", "totalReads")))))
-    return("The assays slot in BSData object must contain methReads and
+        return("The assays slot in BSData object must contain methReads and
     totalReads")
-    if(!all( vapply(assays(object), class, character(1)) == "matrix" ))
-    return("The methReads and totalReads slots of an BSData object must be
+    if(!all(vapply(assays(object), class, character(2))[c(1,3)] == "matrix" ))
+        return("The methReads and totalReads slots of an BSData object must be
     matrices.")
     if(!all(vapply(assays(object), typeof, character(1)) == "integer" ))
-    return("The methReads and totalReads matrices of an BSData object must
-    contain integer data.")})
+        return("The methReads and totalReads matrices of an BSData object must
+        contain integer data.")})
 
 #' @title BSDMCs object
 #' @description The \code{BSDMCs} object is an S4 class that represents
@@ -167,24 +167,22 @@ setValidity("BSData", function(object){
 #' @exportClass BSDMCs
 BSDMCs <- setClass("BSDMCs",
     representation(methReads = "matrix", totalReads = "matrix",
-    methLevels = "matrix", methStates = "matrix", methVars = "matrix"),
-    prototype (methReads = matrix(), totalReads = matrix(),
-    methLevels = matrix(), methStates = matrix(), methVars = matrix()),
-    contains = "RangedSummarizedExperiment")
+        methLevels = "matrix", methStates = "matrix", methVars = "matrix"),
+        prototype (methReads = matrix(), totalReads = matrix(),
+        methLevels = matrix(), methStates = matrix(), methVars = matrix()),
+        contains = "RangedSummarizedExperiment")
 
 setValidity("BSDMCs", function(object){
     if(length(assays(object)) != 5)
-    return("The assays slot in BSDMCs object must be of length five.")
+        return("The assays slot in BSDMCs object must be of length five.")
     if(!(all( is.element(names(assays(object)), c("methReads", "totalReads",
-    "methLevels", "methStates", "methVars")))))
-    return("The assays slot in BSDMCs object must contain totalReads,
-    methReads, methStates, methLevels and methVars.")
-    if(!all( vapply(assays(object), class, character(1)) == "matrix" ))
-    return("The methReads, totalReads, methLevels, methStates and methVars slots
-    of a BSDMCs object must be matrices.")
+        "methLevels", "methStates", "methVars")))))
+        return("The assays slot in BSDMCs object must contain totalReads,
+        methReads, methStates, methLevels and methVars.")
+
     if(!all(vapply(assays(object), typeof, character(1)) ==
-    c("integer", "integer", "double", "integer", "double")))
+        c("integer", "integer", "double", "integer", "double")))
     return("The methReads, totalReads, methLevels, methStates and methVars slots
     of a BSDMCs object must be integer, integer, double, integer and double,
     repectively.")}
-    )
+)
