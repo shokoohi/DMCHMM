@@ -1,7 +1,11 @@
 Package: DMCHMM
 Type: Package
 Title: Differentially Methylated CpG using Hidden Markov Model
+<<<<<<< HEAD
 Version: 1.9.1
+=======
+Version: 1.9.0
+>>>>>>> upstream/master
 Author: Farhad Shokoohi
 Maintainer: Farhad Shokoohi <shokoohi@icloud.com>
 Description: A pipeline for identifying differentially methylated CpG sites 
