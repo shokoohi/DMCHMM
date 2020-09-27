@@ -1,7 +1,7 @@
 ---
 title: "DMCHMM: Differentially Methylated CpG using Hidden Markov Model"
 author: "Farhad Shokoohi"
-date: "2020-03-07"
+date: "2020-09-27"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::knitr}
@@ -60,13 +60,12 @@ The data can be imported using following code.
 library(DMCHMM)
 fn <- list.files(system.file("extdata",package = "DMCHMM"))
 fn.f <- list.files(system.file("extdata",package="DMCHMM"), full.names=TRUE)
-OBJ <- readBismark(fn.f, fn)
+OBJ <- readBismark(fn.f, fn, mc.cores = 2)
 ```
 
 ```
-## Processing sample blk.BCU1568_BC_BS_1 ... 
-## Processing sample blk.BCU173_TC_BS_1 ... 
-## Processing sample blk.BCU551_Mono_BS_1 ... 
+##   |                                                                              |                                                                      |   0%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================================================| 100%
+## 
 ## Building BSData object.
 ```
 
@@ -209,11 +208,11 @@ head(metadata(OBJ4)$DMCHMM)
 ```
 
 ```
-##   DMCs    pvalues   qvalues DMCsGroupG1vsG2 methDirGroupG1vsG2
-## 1    0 0.80631622 0.8587848               0               hypo
-## 2    0 0.38112884 0.7628627               0               hypo
-## 3    0 0.02303307 0.4932287               0              hyper
-## 4    0 0.12534059 0.7117866               0               hypo
-## 5    0 0.43435342 0.7661639               0               hypo
-## 6    0 0.13618504 0.7174863               0              hyper
+##   DMCs   pvalues qvalues DMCsGroupG1vsG2 methDirGroupG1vsG2
+## 1    0 0.9504012       1               0              equal
+## 2    0 0.3114545       1               0              equal
+## 3    0 0.6950481       1               0              equal
+## 4    0 0.2688429       1               0              equal
+## 5    0 0.8830799       1               0              equal
+## 6    0 0.5930447       1               0              equal
 ```

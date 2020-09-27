@@ -2,14 +2,15 @@ citHeader("To cite DMCHMM in publications use:")
 
 citEntry(entry = "Manual",
          title = paste('DMCHMM: an R package to identify differentially
-         methylated CpG Sites using Hidden Markov Models, Version 1.8.1'),
+         methylated CpG Sites using Hidden Markov Models, Version 1.10.2,
+         DOI: 10.18129/B9.bioc.DMCHMM'),
          author = c(person("Farhad", "Shokoohi")),
          year = '2020',
          url = 'http://bioconductor.org/packages/DMCHMM/',
          textVersion  =
            paste0('Farhad Shokoohi (2020) DMCHMM: an R package to identify
            differentially methylated CpG Sites using Hidden Markov Models,
-           Version 1.8.1, ',
+           Version 1.10.2, ','DOI: 10.18129/B9.bioc.DMCHMM',
            'URL  http://bioconductor.org/packages/DMCHMM/')
 )
 
@@ -32,6 +33,6 @@ citEntry(entry = "Article",
            Greenwood C. and Labbe A. (2018).',
          'A Hidden Markov Model for Identifying Differentially
          Methylated Sites in Bisulfite Sequencing Data.',
-                 'Biometrics.','75', '210-221',  'DOI: 10.1111/biom.12965')
+                 'Biometrics.','75','210-221','DOI: 10.1111/biom.12965')
 )
 

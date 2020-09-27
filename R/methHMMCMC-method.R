@@ -90,7 +90,14 @@
             Prob.U.vec <- Prob.U.vec * 0
         }
         dtmp1 <- dbinom(Yv[1], nv[1], old.prob, log = TRUE)
+        if(any(is.infinite(dtmp1))){
+        dtmp1 = dbinom(Yv[1], nv[1], rep(1/length(dtmp1), length(dtmp1)),
+            log = TRUE)
+        }
         dtmp3 <- log(old.P.U[, old.Uvec[2] + 1])
+        if(any(is.infinite(dtmp3))){
+            dtmp3 = log(rep(1/length(dtmp3), length(dtmp3)))
+        }
 
         dtmp <- dtmp1 + dtmp3
         ptmp <- exp(dtmp - max(dtmp))
@@ -100,15 +107,32 @@
 
         for (i in 2:(n - 1)) {
             dtmp1 <- dbinom(Yv[i], nv[i], old.prob, log = TRUE)
+            if(any(is.infinite(dtmp1))){
+            dtmp1 = dbinom(Yv[i], nv[i], rep(1/length(old.prob),
+                length(old.prob)), log = TRUE)
+            }
+
             dtmp3 <- log(old.P.U[old.Uvec[i - 1] + 1, ] * old.P.U[, old.Uvec[i +
                 1] + 1])
+            if(any(is.infinite(dtmp3))){
+                dtmp3= log(rep(1/length(dtmp3), length(dtmp3)))
+            }
+
             dtmp <- dtmp1 + dtmp3
             ptmp <- exp(dtmp - max(dtmp))
             old.Uvec[i] <- sample(0:(Kv + 1), size = 1, prob = ptmp)
             Prob.U.vec[i, ] <- Prob.U.vec[i, ] + ptmp/sum(ptmp)
         }
         dtmp1 <- dbinom(Yv[n], nv[n], old.prob, log = TRUE)
+        if(any(is.infinite(dtmp1))){
+            dtmp1 = dbinom(Yv[n], nv[n], rep(1/length(old.prob),
+                length(old.prob)), log = TRUE)
+        }
+
         dtmp3 <- log(old.P.U[, old.Uvec[n - 1] + 1])
+        if(any(is.infinite(dtmp3))){
+            dtmp3 = log(rep(1/length(dtmp3), length(dtmp3)))
+        }
 
         dtmp <- dtmp1 + dtmp3
         ptmp <- exp(dtmp - max(dtmp))

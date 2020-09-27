@@ -2,25 +2,27 @@
 % Please edit documentation in R/AllGenerics.R, R/readBismark-method.R
 \name{readBismark-method}
 \alias{readBismark-method}
-\alias{readBismark,character,DataFrame-method}
+\alias{readBismark,character,DataFrame,numeric-method}
 \alias{readBismark}
-\alias{readBismark,character,data.frame-method}
-\alias{readBismark,character,character-method}
+\alias{readBismark,character,data.frame,numeric-method}
+\alias{readBismark,character,character,numeric-method}
 \title{readBismark method}
 \usage{
-readBismark(files, colData)
+readBismark(files, colData, mc.cores)
 
-\S4method{readBismark}{character,DataFrame}(files, colData)
+\S4method{readBismark}{character,DataFrame,numeric}(files, colData, mc.cores)
 
-\S4method{readBismark}{character,data.frame}(files, colData)
+\S4method{readBismark}{character,data.frame,numeric}(files, colData, mc.cores)
 
-\S4method{readBismark}{character,character}(files, colData)
+\S4method{readBismark}{character,character,numeric}(files, colData, mc.cores)
 }
 \arguments{
 \item{files}{A character list}
 
 \item{colData}{Object of class \code{"DataFrame"} containing information on
 variable values of the samples}
+
+\item{mc.cores}{An integer greater than 0}
 }
 \value{
 A \code{\link{BSData-class}} object
@@ -31,7 +33,7 @@ reads BS-Seq data
 \examples{
 fn <- list.files(system.file('extdata',package = 'DMCHMM'))
 fn.f <- list.files(system.file('extdata',package='DMCHMM'), full.names=TRUE)
-OBJ <- readBismark(fn.f, fn)
+OBJ <- readBismark(fn.f, fn, mc.cores=2)
 cdOBJ <- DataFrame(Cell = factor(c('BC', 'TC','Mono'),
 labels = c('BC', 'TC', 'Mono')), row.names = c('BCU1568','BCU173','BCU551'))
 colData(OBJ) <- cdOBJ

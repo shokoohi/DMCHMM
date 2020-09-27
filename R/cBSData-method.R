@@ -8,5 +8,8 @@
 
 #' @rdname cBSData-method
 #' @aliases cBSData-method cBSData
-setMethod("cBSData", signature(methReads = "matrix", totalReads = "matrix",
-    rowRanges = "GRanges"), .cBSData)
+setMethod("cBSData",
+    signature(methReads = "matrix",
+        totalReads = "matrix",
+        rowRanges = "GRanges"),
+    .cBSData)
