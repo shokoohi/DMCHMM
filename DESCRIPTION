@@ -1,7 +1,7 @@
 Package: DMCHMM
 Type: Package
 Title: Differentially Methylated CpG using Hidden Markov Model
-Version: 1.10.2
+Version: 1.11.1
 Authors@R: c(person("Farhad", "Shokoohi", role = c("aut", "cre"),
                      email = "shokoohi@icloud.com", comment = c(ORCID = "0000-0002-6224-2609"))
               )
