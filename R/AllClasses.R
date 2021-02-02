@@ -68,6 +68,8 @@
 #' plot.
 #' @param annotateTop If TRUE, only annotates the top hit on each chromosome
 #' that is below the annotatePval threshold.
+#' @param windowsize An integer value for partitioning data into windows of size
+#' windowsize.
 #' @docType NULL
 NULL
 

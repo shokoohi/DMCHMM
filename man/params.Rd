@@ -105,6 +105,9 @@ plot.}
 
 \item{annotateTop}{If TRUE, only annotates the top hit on each chromosome
 that is below the annotatePval threshold.}
+
+\item{windowsize}{An integer value for partitioning data into windows of size
+windowsize.}
 }
 \description{
 parameters name and their descriptions

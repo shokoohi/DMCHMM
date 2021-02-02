@@ -1,5 +1,5 @@
 .findDMCs <- function(object, formula, FDRthreshold, Methylthreshold, mc.cores,
-    weightfunction){
+    windowsize, weightfunction){
 
     if (missing(object) | is(object)[1] != "BSDMCs")
         stop("A BSDMCs object must be provided.")
@@ -45,6 +45,15 @@
         stop("An integer value greater than 0 must be provided for mc.cores.")
     }
     mc.cores = as.integer(mc.cores)
+
+    if (missing(windowsize)) {
+        windowsize = 500
+    } else if (!is.numeric(windowsize) | windowsize <= 0)
+    {
+        stop("An integer value greater than 0 must be provided for windowsize.")
+    }
+    windowsize = as.integer(windowsize)
+    windowsize2 = floor(windowsize*0.8)
 
     if (missing(weightfunction)) {
         weightfunction = NULL
@@ -197,9 +206,9 @@
     if (nPos < 1000) {
         qval <- fdr.fun(pval)
     } else {
-        new.pval <- split(pval, ceiling(seq_along(pval)/500))
+        new.pval <- split(pval, ceiling(seq_along(pval)/windowsize))
         aa = length(new.pval)
-        if(length(new.pval[[aa]])<300){
+        if(length(new.pval[[aa]])<windowsize2){
             new.pval[[aa-1]] <- c(new.pval[[aa-1]] , new.pval[[aa]])
             new.pval = new.pval[-aa]
         }
@@ -215,9 +224,12 @@
                                 function (x) {length(levels(x))}, numeric(1)))
         nPairs <- vapply(nGroupS, function (x) {ncol(combn(seq_len(x), 2))},
                         numeric(1))
-        np <- unlist(vapply(object.df.factor,
-                function(x) {paste(combn(levels(x), 2)[1, ],
-                    combn(levels(x), 2)[2, ], sep = "vs")}, character(1)))
+        #np <- unlist(vapply(object.df.factor,
+        #        function(x) {paste(combn(levels(x), 2)[1, ],
+        #            combn(levels(x), 2)[2, ], sep = "vs")}, character(1)))
+        np <- c(unlist(sapply(object.df.factor, function(x) {paste(combn(
+            levels(x), 2)[1, ], combn(levels(x), 2)[2, ], sep = "vs")})))
+
         names(np) <- NULL
         namesPairDMC <- c(paste("DMCs", rep(names(object.df.factor),
                                             nPairs), np, sep = ""))
@@ -258,5 +270,5 @@
 #' @aliases findDMCs-method findDMCs
 setMethod("findDMCs", signature = c(object = "BSDMCs",
     formula = "ANY", FDRthreshold = "ANY", Methylthreshold = "ANY",
-    mc.cores = "ANY", weightfunction =  "ANY"), .findDMCs)
+    mc.cores = "ANY", windowsize = "ANY", weightfunction =  "ANY"), .findDMCs)
 

@@ -423,7 +423,7 @@ setGeneric("methHMMCMC", function(object, useweight, nburn, nthin, nsamp,
 #' head(metadata(OBJ4)$DMCHMM)
 #' @exportMethod findDMCs
 setGeneric("findDMCs", function(object, formula, FDRthreshold, Methylthreshold,
-    mc.cores, weightfunction) standardGeneric("findDMCs"))
+    mc.cores, windowsize, weightfunction) standardGeneric("findDMCs"))
 
 #' @title qqDMCs method
 #' @description Creates a Q-Q plot based on the p-values obtained

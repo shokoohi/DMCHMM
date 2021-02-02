@@ -12,6 +12,7 @@ findDMCs(
   FDRthreshold,
   Methylthreshold,
   mc.cores,
+  windowsize,
   weightfunction
 )
 
@@ -21,6 +22,7 @@ findDMCs(
   FDRthreshold,
   Methylthreshold,
   mc.cores,
+  windowsize,
   weightfunction
 )
 }
@@ -35,6 +37,9 @@ object}
 \item{Methylthreshold}{A numeric value}
 
 \item{mc.cores}{An integer greater than 0}
+
+\item{windowsize}{An integer value for partitioning data into windows of size
+windowsize.}
 
 \item{weightfunction}{A function to create weights using variance obtained
 form the MCMC algorithm}
