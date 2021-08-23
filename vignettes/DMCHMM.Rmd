@@ -4,7 +4,7 @@ author: "Farhad Shokoohi"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteEngine{knitr::knitr}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Sending Messages With Gmailr}
   %\usepackage[utf8]{inputenc}
 ---

@@ -47,7 +47,7 @@
 #' @param nsamp An integer value
 #' @param formula A formula
 #' @param FDRthreshold A numeric value
-#' @param Methylthreshold A numeric value
+#' @param Methylthreshold A positive numeric value; the default is 0.001
 #' @param weightfunction A function to create weights using variance obtained
 #' form the MCMC algorithm
 #' @param ... other possible parameters

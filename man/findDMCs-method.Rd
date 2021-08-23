@@ -34,7 +34,7 @@ object}
 
 \item{FDRthreshold}{A numeric value}
 
-\item{Methylthreshold}{A numeric value}
+\item{Methylthreshold}{A positive numeric value; the default is 0.001}
 
 \item{mc.cores}{An integer greater than 0}
 

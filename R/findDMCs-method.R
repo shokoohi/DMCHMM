@@ -30,7 +30,7 @@
     FDRthreshold = as.numeric(FDRthreshold)
 
     if (missing(Methylthreshold)) {
-        Methylthreshold = 0.1
+        Methylthreshold = 0.001
     } else if (!is.numeric(Methylthreshold) | Methylthreshold <
         0 | Methylthreshold > 0.9) {
         stop("A numeric value between 0 and 0.9 must be provided for

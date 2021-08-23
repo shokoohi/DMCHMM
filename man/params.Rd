@@ -74,7 +74,7 @@ object}
 
 \item{FDRthreshold}{A numeric value}
 
-\item{Methylthreshold}{A numeric value}
+\item{Methylthreshold}{A positive numeric value; the default is 0.001}
 
 \item{weightfunction}{A function to create weights using variance obtained
 form the MCMC algorithm}
