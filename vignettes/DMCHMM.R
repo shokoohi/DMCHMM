@@ -30,3 +30,6 @@ OBJ3
 OBJ4 <- findDMCs(OBJ3)
 head(metadata(OBJ4)$DMCHMM)
 
+## -----------------------------------------------------------------------------
+sessionInfo()
+

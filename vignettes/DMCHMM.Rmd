@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Sending Messages With Gmailr}
+  %\VignetteIndexEntry{DMCHMM: Differentially Methylated CpG using Hidden Markov Model}
   %\usepackage[utf8]{inputenc}
 ---
 
@@ -115,10 +115,17 @@ OBJ3
 Having smoothed the data using HMM, we run linear between predicted methylation
 levels and grouping covariate. In case other covariates exist, one can use the 
 `formula` argument to specify a linear model. When there is no covariates no 
-action is required. The following command identifys the DMCs. The results are
-stored in a `BSDMCs-class` and can be retrived by calling `metadata` command. 
+action is required. The following command identifies the DMCs. The results are
+stored in a `BSDMCs-class` and can be retrieved by calling `metadata` command. 
 
 ```{r, eval=TRUE, message=FALSE}
 OBJ4 <- findDMCs(OBJ3)
 head(metadata(OBJ4)$DMCHMM)
 ```
+
+
+```{r}
+sessionInfo()
+```
+
+
