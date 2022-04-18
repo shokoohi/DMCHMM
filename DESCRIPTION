@@ -1,7 +1,7 @@
 Package: DMCHMM
 Type: Package
 Title: Differentially Methylated CpG using Hidden Markov Model
-Version: 1.15.1
+Version: 1.17.1
 Authors@R: c(person("Farhad", "Shokoohi", role = c("aut", "cre"),
                      email = "shokoohi@icloud.com", comment = c(ORCID = "0000-0002-6224-2609"))
               )
@@ -54,6 +54,6 @@ Date: 2020-09-27
 Encoding: UTF-8
 LazyData: true
 BugReports: https://github.com/shokoohi/DMCHMM/issues
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 NeedsCompilation: no
 Packaged: 2017-06-23 00:13:02 UTC; Farhad

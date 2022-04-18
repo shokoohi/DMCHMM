@@ -178,7 +178,9 @@
 
                         options(show.error.messages = FALSE)
                         suppressWarnings(lmodelc <- try(glht(lmodel,
-                                                linfct = bb, silent = TRUE)))
+                            linfct = bb)))
+                        #suppressWarnings(lmodelc <- try(glht(lmodel,
+                        #   linfct = bb, silent = TRUE)))
                         options(show.error.messages = TRUE)
                         if ((is(lmodelc)[1] == "try-error")) {
                             dmcs <- c(dmcs, rep(NA, nGroup))
@@ -190,8 +192,7 @@
                     }
                 }
                 dmcs <- (dmcs < 0.05) * 1
-                return(list(p.val = p.val, dmcs = dmcs,
-                            methDir = methDir))
+                return(list(p.val = p.val, dmcs = dmcs, methDir = methDir))
             }
         }
     }
